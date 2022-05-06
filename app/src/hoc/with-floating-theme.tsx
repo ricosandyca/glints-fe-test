@@ -28,8 +28,8 @@ export function withFloatingTheme<T>(Content: ComponentType<T>): FC<T> {
           variant="solid"
           icon={<Icon as={icon} />}
           position="fixed"
-          bottom={4}
-          right={4}
+          bottom={6}
+          right={6}
           color="bg"
           bg="text"
           onClick={toggleColorMode}

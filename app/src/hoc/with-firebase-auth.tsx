@@ -14,7 +14,7 @@ export function withFirebaseAuth<T>(Content: ComponentType<T>): FC<T> {
     // listen firebase auth state
     useEffect(() => {
       return firebase.auth().onAuthStateChanged((auth) => {
-        setAuth(auth ? { uid: auth.uid } : null);
+        setAuth(auth ? { uid: auth.uid, email: auth.email! } : null);
         setIsReady(true);
       });
     }, []);

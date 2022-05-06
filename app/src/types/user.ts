@@ -1,5 +1,7 @@
 import firestore from 'firebase/firestore';
 
+import { WithFirestoreId } from '.';
+
 export const USERS_COLLECTION = 'users';
 
 export type UserWorkExperience = {
@@ -20,7 +22,9 @@ export type User = {
   name: string;
   profile_picture?: string;
   age?: number;
-  work_experiences: UserWorkExperience[];
+  work_experiences?: UserWorkExperience[];
   created_at: firestore.Timestamp;
   updated_at: firestore.Timestamp;
 };
+
+export type UserDocument = WithFirestoreId<User>;

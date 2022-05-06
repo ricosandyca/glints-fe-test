@@ -3,7 +3,7 @@ import { Route, Routes } from 'react-router-dom';
 
 import { withUnauthorizedUser } from '~/hoc/with-firebase-auth';
 import NotFound from '~/pages/not-found';
-import SignUp from '~/pages/sign-up';
+import SignUp from '~/pages/signup';
 import Signin from '~/pages/signin';
 
 const AuthRoutes: FC = () => {

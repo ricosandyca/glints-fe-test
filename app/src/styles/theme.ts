@@ -44,6 +44,10 @@ export default extendTheme({
       },
       bg: {
         default: 'white',
+        _dark: 'gray.900',
+      },
+      fg: {
+        default: 'white',
         _dark: 'gray.800',
       },
       text: {
