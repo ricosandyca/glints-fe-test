@@ -21,6 +21,22 @@ export function getUserListener(
     });
 }
 
+export async function initUser(uid: string, email: string) {
+  const defaultName = email.split('@')[0] ?? null;
+  const userData: User = {
+    created_at: Timestamp.fromDate(new Date()),
+    updated_at: Timestamp.fromDate(new Date()),
+    is_private: true,
+    key: defaultName,
+    name: defaultName,
+    email,
+    uid,
+  };
+  const userRef = db.collection(USERS_COLLECTION).doc(uid);
+  await userRef.set(userData);
+  return userRef.id;
+}
+
 export async function updateUser(userId: string, userData: Partial<User>) {
   const newUserData: Partial<User> = {
     ...userData,

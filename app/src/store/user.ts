@@ -5,6 +5,7 @@ import { UserDocument } from '~/types/user';
 
 export const userState = atom<UserDocument | null | undefined>({
   key: 'userState',
+  default: undefined,
 });
 
 export const userFieldValueState = selectorFamily<

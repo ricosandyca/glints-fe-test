@@ -2,6 +2,7 @@ import { Box, Button, Icon, StackProps, VStack } from '@chakra-ui/react';
 import { FC } from 'react';
 import { BiLogOutCircle } from 'react-icons/bi';
 
+import UserProfilePictureInput from '~/components/UserProfilePictureInput';
 import { withContainer } from '~/hoc/with-container';
 import { useSignOutAction } from '~/hooks/use-auth';
 
@@ -27,7 +28,7 @@ const AppProfileContent: FC<StackProps> = withContainer((props) => {
   return (
     <VStack position="relative" w="full" spacing={6} {...props}>
       <Box w="full" bg="fg" rounded="xl" shadow="md" h="600px" p={6}>
-        Hello world
+        <UserProfilePictureInput />
       </Box>
 
       {/* Signout button */}
