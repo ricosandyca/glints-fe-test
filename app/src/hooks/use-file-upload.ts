@@ -31,7 +31,12 @@ export function useFileURLFetcher(fileURL: string | null | undefined) {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    if (!fileURL) return setDownloadURl(null);
+    if (!fileURL) {
+      setDownloadURl(null);
+      setIsLoading(false);
+      return;
+    }
+
     getDownloadURL(fileURL)
       .then(setDownloadURl)
       .catch((err) => setError(err.message))

@@ -28,7 +28,7 @@ const AppProfileContent: FC<StackProps> = withContainer((props) => {
   return (
     <VStack position="relative" w="full" spacing={6} {...props}>
       <Box w="full" bg="fg" rounded="xl" shadow="md" h="600px" p={6}>
-        <UserProfilePictureInput />
+        <UserProfilePictureInput h="200px" w="200px" />
       </Box>
 
       {/* Signout button */}

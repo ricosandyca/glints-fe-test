@@ -43,6 +43,6 @@ export async function updateUser(userId: string, userData: Partial<User>) {
     updated_at: Timestamp.fromDate(new Date()),
   };
   const userRef = db.collection(USERS_COLLECTION).doc(userId);
-  await userRef.set(newUserData, { merge: true });
+  await userRef.update(newUserData);
   return userRef.id;
 }
