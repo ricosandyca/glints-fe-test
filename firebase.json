@@ -1,0 +1,27 @@
+{
+  "firestore": {
+    "rules": "firestore/firestore.rules",
+    "indexes": "firestore/firestore.indexes.json"
+  },
+  "hosting": {
+    "public": "app/dist",
+    "predeploy": [
+      "yarn --cwd app install --frozen-lockfile",
+      "yarn --cwd app build"
+    ],
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ],
+    "rewrites": [
+      {
+        "source": "**",
+        "destination": "/index.html"
+      }
+    ]
+  },
+  "storage": {
+    "rules": "storage/storage.rules"
+  }
+}
