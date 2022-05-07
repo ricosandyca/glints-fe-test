@@ -23,7 +23,7 @@ export type User = {
   summary?: string;
   profile_picture?: string;
   date_of_birth?: firestore.Timestamp;
-  work_experiences?: UserWorkExperience[];
+  work_experiences: UserWorkExperience[];
   created_at: firestore.Timestamp;
   updated_at: firestore.Timestamp;
 };

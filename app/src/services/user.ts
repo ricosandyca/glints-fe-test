@@ -29,6 +29,7 @@ export async function initUser(uid: string, email: string) {
     is_private: true,
     key: defaultName,
     name: defaultName,
+    work_experiences: [],
     email,
     uid,
   };

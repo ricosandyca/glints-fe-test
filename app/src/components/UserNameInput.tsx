@@ -16,7 +16,7 @@ const UserNameInput: FC = () => {
 
   return (
     <FormControl>
-      <FormLabel fontSize="xs" color="subtext">
+      <FormLabel mb={0.5} fontSize="xs" color="subtext">
         Name
       </FormLabel>
       <Editable

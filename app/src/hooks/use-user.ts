@@ -3,11 +3,14 @@ import { useCallback, useState } from 'react';
 import { useRecoilValue } from 'recoil';
 import { getUserdataStoragePath } from '~/services/storage';
 
+import {
+  useFileUploadAction,
+  useFileURLFetcher,
+} from '~/hooks/use-file-upload';
 import { updateUser } from '~/services/user';
 import { userFieldValueState } from '~/store/user';
-import { User, UserDocument } from '~/types/user';
+import { User, UserDocument, UserWorkExperience } from '~/types/user';
 import { validateFileImage } from '~/utils/file';
-import { useFileUploadAction, useFileURLFetcher } from './use-file-upload';
 
 export function useUserUpdateAction<T extends keyof User>(key: T) {
   const userId = useRecoilValue(
@@ -77,4 +80,52 @@ export function useUserProfilePictureUploadAction() {
   const isLoading = isUpdating || isDownloading || isUploading;
 
   return { handleUploadProfilePicture, downloadURL, percentage, isLoading };
+}
+
+export function useUserWorkExperiencesUpdateAction() {
+  const {
+    value: workExperiences,
+    handleUpdateValue: handleUpdateWorkExperiences,
+    isLoading,
+    error,
+  } = useUserUpdateAction('work_experiences');
+
+  const handleAddWorkExperience = useCallback(
+    async (newWorkExperience: UserWorkExperience) => {
+      await handleUpdateWorkExperiences([
+        ...workExperiences,
+        newWorkExperience,
+      ]);
+    },
+    [workExperiences],
+  );
+
+  const handleUpdateWorkExperience = useCallback(
+    async (
+      workExperienceId: string,
+      data: Partial<Omit<UserWorkExperience, 'id'>>,
+    ) => {
+      const newWorkExperiences = workExperiences.map((we) => {
+        if (we.id === workExperienceId) return { ...we, ...data };
+        return we;
+      });
+      await handleUpdateWorkExperiences(newWorkExperiences);
+    },
+    [workExperiences],
+  );
+
+  const handleReplaceWorkExperiences = useCallback(
+    async (newWorkExperiences: UserWorkExperience[]) => {
+      await handleUpdateWorkExperiences(newWorkExperiences);
+    },
+    [],
+  );
+
+  return {
+    handleUpdateWorkExperience,
+    handleAddWorkExperience,
+    handleReplaceWorkExperiences,
+    isLoading,
+    error,
+  };
 }

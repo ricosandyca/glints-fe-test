@@ -64,7 +64,7 @@ const AppProfileContent: FC<StackProps> = withContainer((props) => {
           <VStack flex={1} spacing={8} align="flex-start">
             {/* Basic info input */}
             <VStack
-              maxW="600px"
+              maxW="700px"
               w="full"
               alignSelf="flex-start"
               spacing={4}
@@ -78,8 +78,13 @@ const AppProfileContent: FC<StackProps> = withContainer((props) => {
             <Divider />
 
             {/* Work experiences */}
-            <VStack maxW="600px" w="full" align="flex-start" spacing={4}>
-              <Heading fontSize="xl" fontWeight="medium">
+            <VStack maxW="700px" w="full" align="flex-start" spacing={6}>
+              <Heading
+                fontSize="sm"
+                fontWeight="semibold"
+                textTransform="uppercase"
+                color="subtext"
+              >
                 Work Experiences
               </Heading>
               <UserWorkExperienceList />

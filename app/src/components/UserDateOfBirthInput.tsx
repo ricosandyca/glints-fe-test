@@ -12,7 +12,7 @@ const UserDateOfBirthInput: FC = () => {
 
   return (
     <FormControl alignSelf="flex-start" w="auto">
-      <FormLabel fontSize="xs" color="subtext">
+      <FormLabel mb={0.5} fontSize="xs" color="subtext">
         Date of birth
       </FormLabel>
       <DateInput
