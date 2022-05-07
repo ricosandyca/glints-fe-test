@@ -5,9 +5,13 @@ import {
   EditableInput,
   EditablePreview,
   EditableTextarea,
+  HStack,
+  Icon,
+  IconButton,
   VStack,
 } from '@chakra-ui/react';
 import { FC, memo } from 'react';
+import { AiOutlineDelete } from 'react-icons/ai';
 
 import useDependentState from '~/hooks/use-dependent-state';
 import { useUserWorkExperiencesUpdateAction } from '~/hooks/use-user';
@@ -22,7 +26,8 @@ const UserWorkExperienceItem: FC<UserWorkExperienceItemProps> = ({
   workExperience,
   isLastItem,
 }) => {
-  const { handleUpdateWorkExperience } = useUserWorkExperiencesUpdateAction();
+  const { handleUpdateWorkExperience, handleDeleteWorkExperience } =
+    useUserWorkExperiencesUpdateAction();
   const [jobTitle, setJobTitle] = useDependentState(workExperience.job_title);
   const [jobDesc, setJobDesc] = useDependentState(
     workExperience.job_description,
@@ -30,7 +35,7 @@ const UserWorkExperienceItem: FC<UserWorkExperienceItemProps> = ({
   const [company, setCompany] = useDependentState(workExperience.company);
 
   return (
-    <Box position="relative" pb={8}>
+    <Box position="relative" pb={10}>
       {/* Dot divider */}
       <VStack position="absolute" h="full" top={1.5} left={0} spacing={0}>
         <Box w="10px" h="10px" bg="primary" rounded="full" />
@@ -44,21 +49,36 @@ const UserWorkExperienceItem: FC<UserWorkExperienceItemProps> = ({
 
       {/* Main content */}
       <VStack align="flex-start" ml="calc(1rem + 10px)" spacing={1} w="full">
-        {/* Job title */}
-        <Editable
-          fontSize="lg"
-          fontWeight="medium"
-          value={jobTitle}
-          onChange={setJobTitle}
-          onSubmit={(value) =>
-            handleUpdateWorkExperience(workExperience.id, { job_title: value })
-          }
-          placeholder="Job title..."
-          w="full"
-        >
-          <EditablePreview py={0} opacity={!jobTitle ? 0.3 : 1} />
-          <EditableInput py={0} rounded="sm" />
-        </Editable>
+        <HStack w="full">
+          {/* Job title */}
+          <Editable
+            fontSize="lg"
+            fontWeight="medium"
+            value={jobTitle}
+            onChange={setJobTitle}
+            onSubmit={(value) =>
+              handleUpdateWorkExperience(workExperience.id, {
+                job_title: value,
+              })
+            }
+            placeholder="Job title..."
+            w="full"
+          >
+            <EditablePreview py={0} opacity={!jobTitle ? 0.3 : 1} />
+            <EditableInput py={0} rounded="sm" />
+          </Editable>
+
+          {/* Delete button */}
+          <IconButton
+            aria-label="Delete work button"
+            size="sm"
+            colorScheme="red"
+            variant="ghost"
+            rounded="full"
+            icon={<Icon fontSize="md" as={AiOutlineDelete} />}
+            onClick={() => handleDeleteWorkExperience(workExperience.id)}
+          />
+        </HStack>
 
         {/* Company name */}
         <Editable

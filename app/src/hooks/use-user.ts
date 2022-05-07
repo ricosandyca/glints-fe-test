@@ -121,10 +121,21 @@ export function useUserWorkExperiencesUpdateAction() {
     [],
   );
 
+  const handleDeleteWorkExperience = useCallback(
+    async (workExperienceId: string) => {
+      const newWorkExperiences = workExperiences.filter(
+        ({ id }) => workExperienceId !== id,
+      );
+      await handleUpdateWorkExperiences(newWorkExperiences);
+    },
+    [workExperiences],
+  );
+
   return {
     handleUpdateWorkExperience,
     handleAddWorkExperience,
     handleReplaceWorkExperiences,
+    handleDeleteWorkExperience,
     isLoading,
     error,
   };
