@@ -1,4 +1,10 @@
-import { Editable, EditablePreview, EditableTextarea } from '@chakra-ui/react';
+import {
+  Editable,
+  EditablePreview,
+  EditableTextarea,
+  FormControl,
+  FormLabel,
+} from '@chakra-ui/react';
 import { FC, memo } from 'react';
 
 import useDependentState from '~/hooks/use-dependent-state';
@@ -9,16 +15,22 @@ const UserSummaryInput: FC = () => {
   const [summary, setSummary] = useDependentState(value);
 
   return (
-    <Editable
-      value={summary}
-      onChange={setSummary}
-      onSubmit={handleUpdateValue}
-      placeholder="Your professional summary..."
-      w="full"
-    >
-      <EditablePreview opacity={!summary ? 0.3 : 1} />
-      <EditableTextarea borderRadius="4px" h="145px" />
-    </Editable>
+    <FormControl>
+      <FormLabel fontSize="xs" color="subtext">
+        Professional Summary
+      </FormLabel>
+      <Editable
+        value={summary}
+        onChange={setSummary}
+        onSubmit={handleUpdateValue}
+        placeholder="Your professional summary..."
+        w="full"
+        minH="145px"
+      >
+        <EditablePreview opacity={!summary ? 0.3 : 1} py={0} />
+        <EditableTextarea borderRadius="4px" minH="139px" py={0} />
+      </Editable>
+    </FormControl>
   );
 };
 

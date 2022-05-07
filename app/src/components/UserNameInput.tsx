@@ -1,4 +1,10 @@
-import { Editable, EditableInput, EditablePreview } from '@chakra-ui/react';
+import {
+  Editable,
+  EditableInput,
+  EditablePreview,
+  FormControl,
+  FormLabel,
+} from '@chakra-ui/react';
 import { FC, memo } from 'react';
 
 import useDependentState from '~/hooks/use-dependent-state';
@@ -9,19 +15,24 @@ const UserNameInput: FC = () => {
   const [name, setName] = useDependentState(value);
 
   return (
-    <Editable
-      fontSize="2xl"
-      fontWeight="semibold"
-      fontFamily="heading"
-      value={name}
-      onChange={setName}
-      onSubmit={handleUpdateValue}
-      placeholder="Your name..."
-      w="full"
-    >
-      <EditablePreview opacity={!name ? 0.3 : 1} />
-      <EditableInput borderRadius="4px" />
-    </Editable>
+    <FormControl>
+      <FormLabel fontSize="xs" color="subtext">
+        Name
+      </FormLabel>
+      <Editable
+        fontSize="2xl"
+        fontWeight="semibold"
+        fontFamily="heading"
+        value={name}
+        onChange={setName}
+        onSubmit={handleUpdateValue}
+        placeholder="Your name..."
+        w="full"
+      >
+        <EditablePreview opacity={!name ? 0.3 : 1} py={0} />
+        <EditableInput borderRadius="4px" py={0} />
+      </Editable>
+    </FormControl>
   );
 };
 

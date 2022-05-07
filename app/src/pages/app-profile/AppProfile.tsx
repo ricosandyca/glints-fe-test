@@ -1,6 +1,7 @@
 import { Box, Button, Icon, Stack, StackProps, VStack } from '@chakra-ui/react';
 import { FC } from 'react';
 import { BiLogOutCircle } from 'react-icons/bi';
+import UserDateOfBirthInput from '~/components/UserDateOfBirthInput';
 
 import UserNameInput from '~/components/UserNameInput';
 import UserProfilePictureInput from '~/components/UserProfilePictureInput';
@@ -41,8 +42,9 @@ const AppProfileContent: FC<StackProps> = withContainer((props) => {
             h="200px"
             w="200px"
           />
-          <VStack alignSelf="flex-start" maxW="600px" flex={1}>
+          <VStack alignSelf="flex-start" spacing={4} maxW="600px" flex={1}>
             <UserNameInput />
+            <UserDateOfBirthInput />
             <UserSummaryInput />
           </VStack>
         </Stack>
