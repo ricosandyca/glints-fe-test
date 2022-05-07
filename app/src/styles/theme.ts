@@ -51,11 +51,11 @@ export default extendTheme({
         _dark: 'gray.800',
       },
       text: {
-        default: 'gray.700',
+        default: 'gray.600',
         _dark: 'gray.100',
       },
       subtext: {
-        default: 'gray.600',
+        default: 'gray.500',
         _dark: 'gray.300',
       },
     },

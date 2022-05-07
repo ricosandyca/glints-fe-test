@@ -20,8 +20,9 @@ export type User = {
   key: string; // unique user key to define their vanity URL
   is_private: boolean; // to determine is the user's profile is viewable to other users
   name: string;
+  summary?: string;
   profile_picture?: string;
-  age?: number;
+  date_of_birth?: firestore.Timestamp;
   work_experiences?: UserWorkExperience[];
   created_at: firestore.Timestamp;
   updated_at: firestore.Timestamp;
