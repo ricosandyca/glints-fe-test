@@ -1,4 +1,11 @@
-import { Box, Center, HStack, Icon, IconButton } from '@chakra-ui/react';
+import {
+  Box,
+  Center,
+  HStack,
+  Icon,
+  IconButton,
+  Tooltip,
+} from '@chakra-ui/react';
 import { Timestamp } from 'firebase/firestore';
 import { FC, memo } from 'react';
 import { HiPlus } from 'react-icons/hi';
@@ -10,25 +17,32 @@ const UserWorkExperienceAddItem: FC = () => {
   const { handleAddWorkExperience } = useUserWorkExperiencesUpdateAction();
 
   return (
-    <Box position="relative" pb={8}>
+    <Box position="relative" pb={6}>
       {/* Dot divider */}
-      <HStack position="absolute" h="full" top={-2.5} left={1.5} spacing={0}>
+      <HStack position="absolute" h="full" top={0} left={1.5} spacing={0}>
         <Center flex={1} w="22px" borderTopWidth="2px" borderStyle="dashed" />
-        <IconButton
-          aria-label="Add work experience"
-          size="sm"
-          variant="outline"
-          rounded="full"
-          icon={<Icon fontSize="lg" as={HiPlus} opacity={0.5} />}
-          onClick={() => {
-            handleAddWorkExperience({
-              id: uuidv4(),
-              company: '',
-              job_title: '',
-              start_date: Timestamp.fromDate(new Date()),
-            });
-          }}
-        />
+        <Tooltip
+          label="Add work experience"
+          rounded="lg"
+          placement="right"
+          hasArrow
+        >
+          <IconButton
+            aria-label="Add work experience"
+            size="sm"
+            variant="outline"
+            rounded="full"
+            icon={<Icon fontSize="lg" as={HiPlus} opacity={0.5} />}
+            onClick={() => {
+              handleAddWorkExperience({
+                id: uuidv4(),
+                company: '',
+                job_title: '',
+                start_date: Timestamp.fromDate(new Date()),
+              });
+            }}
+          />
+        </Tooltip>
       </HStack>
     </Box>
   );

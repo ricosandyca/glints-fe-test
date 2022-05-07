@@ -8,6 +8,7 @@ import {
   HStack,
   Icon,
   IconButton,
+  Tooltip,
   VStack,
 } from '@chakra-ui/react';
 import { FC, memo } from 'react';
@@ -35,9 +36,9 @@ const UserWorkExperienceItem: FC<UserWorkExperienceItemProps> = ({
   const [company, setCompany] = useDependentState(workExperience.company);
 
   return (
-    <Box position="relative" pb={10}>
+    <Box position="relative" w="full" pb={10}>
       {/* Dot divider */}
-      <VStack position="absolute" h="full" top={1.5} left={0} spacing={0}>
+      <VStack position="absolute" h="full" top={3} left={0} spacing={0}>
         <Box w="10px" h="10px" bg="primary" rounded="full" />
         <Center
           flex={1}
@@ -48,7 +49,7 @@ const UserWorkExperienceItem: FC<UserWorkExperienceItemProps> = ({
       </VStack>
 
       {/* Main content */}
-      <VStack align="flex-start" ml="calc(1rem + 10px)" spacing={1} w="full">
+      <VStack align="flex-start" pl="calc(1rem + 10px)" spacing={1.5} w="full">
         <HStack w="full">
           {/* Job title */}
           <Editable
@@ -69,15 +70,22 @@ const UserWorkExperienceItem: FC<UserWorkExperienceItemProps> = ({
           </Editable>
 
           {/* Delete button */}
-          <IconButton
-            aria-label="Delete work button"
-            size="sm"
-            colorScheme="red"
-            variant="ghost"
-            rounded="full"
-            icon={<Icon fontSize="md" as={AiOutlineDelete} />}
-            onClick={() => handleDeleteWorkExperience(workExperience.id)}
-          />
+          <Tooltip
+            label="Delete work experience"
+            rounded="lg"
+            placement="left"
+            hasArrow
+          >
+            <IconButton
+              aria-label="Delete work button"
+              size="sm"
+              colorScheme="red"
+              variant="ghost"
+              rounded="full"
+              icon={<Icon fontSize="md" as={AiOutlineDelete} />}
+              onClick={() => handleDeleteWorkExperience(workExperience.id)}
+            />
+          </Tooltip>
         </HStack>
 
         {/* Company name */}
