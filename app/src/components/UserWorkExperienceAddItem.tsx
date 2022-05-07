@@ -13,14 +13,28 @@ import { v4 as uuidv4 } from 'uuid';
 
 import { useUserWorkExperiencesUpdateAction } from '~/hooks/use-user';
 
-const UserWorkExperienceAddItem: FC = () => {
+export type UserWorkExperienceAddItemProps = {
+  isListEmpty?: boolean;
+};
+
+const UserWorkExperienceAddItem: FC<UserWorkExperienceAddItemProps> = ({
+  isListEmpty,
+}) => {
   const { handleAddWorkExperience } = useUserWorkExperiencesUpdateAction();
 
   return (
     <Box position="relative" pb={6}>
       {/* Dot divider */}
-      <HStack position="absolute" h="full" top={0} left={1.5} spacing={0}>
-        <Center flex={1} w="22px" borderTopWidth="2px" borderStyle="dashed" />
+      <HStack
+        position="absolute"
+        h="full"
+        top={0}
+        left={isListEmpty ? 0 : 1.5}
+        spacing={0}
+      >
+        {!isListEmpty && (
+          <Center flex={1} w="22px" borderTopWidth="2px" borderStyle="dashed" />
+        )}
         <Tooltip
           label="Add work experience"
           rounded="lg"

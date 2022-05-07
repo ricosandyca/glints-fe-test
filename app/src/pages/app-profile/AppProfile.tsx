@@ -67,7 +67,7 @@ const AppProfileContent: FC<StackProps> = withContainer((props) => {
               maxW="700px"
               w="full"
               alignSelf="flex-start"
-              spacing={4}
+              spacing={6}
               flex={1}
             >
               <UserNameInput />

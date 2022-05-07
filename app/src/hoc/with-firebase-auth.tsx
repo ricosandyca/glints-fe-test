@@ -38,7 +38,7 @@ export function withFirebaseAuth<T>(Content: ComponentType<T>): FC<T> {
       return getUserListener(uid, async (user) => {
         // optionally create a new user document
         // if current user doesn't have it yet
-        if (!user) await initUser(auth.uid, auth.email);
+        if (!user) return await initUser(auth.uid, auth.email);
         setUser(user);
         setIsUserReady(true);
       });

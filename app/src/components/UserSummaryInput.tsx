@@ -16,7 +16,7 @@ const UserSummaryInput: FC = () => {
 
   return (
     <FormControl>
-      <FormLabel mb={0.5} fontSize="xs" color="subtext">
+      <FormLabel fontSize="xs" color="subtext">
         Professional Summary
       </FormLabel>
       <Editable

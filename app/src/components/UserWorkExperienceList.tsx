@@ -8,15 +8,16 @@ import UserWorkExperienceAddItem from './UserWorkExperienceAddItem';
 const UserWorkExperienceList: FC = () => {
   const { value: workExperiences } = useUserUpdateAction('work_experiences');
 
-  if (!workExperiences) return null;
-
   return (
     <Box position="relative" w="full">
-      {workExperiences.map((we) => (
+      {(workExperiences || []).map((we) => (
         <UserWorkExperienceItem key={we.id} workExperience={we} />
       ))}
+
       {/* Add work experience */}
-      <UserWorkExperienceAddItem />
+      <UserWorkExperienceAddItem
+        isListEmpty={!workExperiences || workExperiences.length <= 0}
+      />
     </Box>
   );
 };

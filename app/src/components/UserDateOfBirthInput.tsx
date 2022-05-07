@@ -12,7 +12,7 @@ const UserDateOfBirthInput: FC = () => {
 
   return (
     <FormControl alignSelf="flex-start" w="auto">
-      <FormLabel mb={0.5} fontSize="xs" color="subtext">
+      <FormLabel fontSize="xs" color="subtext">
         Date of birth
       </FormLabel>
       <DateInput
@@ -22,13 +22,15 @@ const UserDateOfBirthInput: FC = () => {
         <HStack cursor="pointer" spacing={1}>
           {date ? (
             <>
-              <Text fontWeight="semibold">{format(date, 'dd/MM/yyyy')}</Text>
+              <Text>{format(date, 'dd/MM/yyyy')}</Text>
               <Text fontWeight="semibold" color="primary">
                 ({differenceInCalendarYears(new Date(), date)} years old)
               </Text>
             </>
           ) : (
-            <Text color="subtext">Set your date of birth...</Text>
+            <Text color="subtext" fontSize="sm">
+              Set your date of birth...
+            </Text>
           )}
         </HStack>
       </DateInput>
