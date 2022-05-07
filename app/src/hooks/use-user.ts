@@ -1,3 +1,4 @@
+import { useToast } from '@chakra-ui/react';
 import { useCallback, useState } from 'react';
 import { useRecoilValue } from 'recoil';
 import { getUserdataStoragePath } from '~/services/storage';
@@ -38,6 +39,7 @@ export function useUserUpdateAction<T extends keyof User>(key: T) {
 }
 
 export function useUserProfilePictureUploadAction() {
+  const toast = useToast();
   const {
     userId,
     value: profilePicture,
@@ -55,7 +57,12 @@ export function useUserProfilePictureUploadAction() {
   const handleUploadProfilePicture = useCallback(
     async (file: File) => {
       // validate profile picture
-      if (!validateFileImage(file)) return;
+      if (!validateFileImage(file)) {
+        return toast({
+          status: 'error',
+          title: 'Invalid image',
+        });
+      }
       // start uploading file to the cloud
       // the upload user's profile picture on success
       handleUploadFile(

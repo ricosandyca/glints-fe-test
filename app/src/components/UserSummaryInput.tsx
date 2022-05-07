@@ -25,10 +25,9 @@ const UserSummaryInput: FC = () => {
         onSubmit={handleUpdateValue}
         placeholder="Your professional summary..."
         w="full"
-        minH="145px"
       >
         <EditablePreview opacity={!summary ? 0.3 : 1} py={0} />
-        <EditableTextarea borderRadius="4px" minH="139px" py={0} />
+        <EditableTextarea borderRadius="4px" minH="120px" py={0} />
       </Editable>
     </FormControl>
   );
