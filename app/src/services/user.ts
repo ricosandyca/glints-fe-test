@@ -1,5 +1,6 @@
 import firebase from 'firebase/compat/app';
 import { Timestamp } from 'firebase/firestore';
+import { v4 as uuidv4 } from 'uuid';
 
 import { User, UserDocument, USERS_COLLECTION } from '~/types/user';
 
@@ -27,7 +28,7 @@ export async function initUser(uid: string, email: string) {
     created_at: Timestamp.fromDate(new Date()),
     updated_at: Timestamp.fromDate(new Date()),
     is_private: true,
-    key: defaultName,
+    key: uuidv4(),
     name: defaultName,
     work_experiences: [],
     email,

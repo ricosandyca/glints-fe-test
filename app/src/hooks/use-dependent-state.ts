@@ -1,9 +1,9 @@
-import { useEffect, useMemo, useState } from 'react';
+import { Dispatch, SetStateAction, useEffect, useMemo, useState } from 'react';
 
-export default function useDependentState<T>(dependency: T) {
+export default function useDependentState<T>(
+  dependency: T,
+): [T, Dispatch<SetStateAction<T>>] {
   const memoizedValue = useMemo(() => {
-    if (typeof dependency === 'object')
-      return JSON.parse(JSON.stringify(dependency));
     return dependency;
   }, [dependency]);
 

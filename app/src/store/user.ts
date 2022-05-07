@@ -17,7 +17,6 @@ export const userFieldValueState = selectorFamily<
     (key) =>
     ({ get }) => {
       const user = get(userState);
-      console.log(user);
       if (!user) return undefined;
       return user[key];
     },

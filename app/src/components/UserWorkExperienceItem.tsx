@@ -1,5 +1,6 @@
 import {
   Box,
+  Button,
   Center,
   Editable,
   EditableInput,
@@ -8,12 +9,16 @@ import {
   HStack,
   Icon,
   IconButton,
+  Text,
   Tooltip,
   VStack,
 } from '@chakra-ui/react';
+import { format, formatDistanceStrict } from 'date-fns';
+import { Timestamp } from 'firebase/firestore';
 import { FC, memo } from 'react';
 import { AiOutlineDelete } from 'react-icons/ai';
 
+import DateInput from '~/components/DateInput';
 import useDependentState from '~/hooks/use-dependent-state';
 import { useUserWorkExperiencesUpdateAction } from '~/hooks/use-user';
 import { UserWorkExperience } from '~/types/user';
@@ -34,6 +39,8 @@ const UserWorkExperienceItem: FC<UserWorkExperienceItemProps> = ({
     workExperience.job_description,
   );
   const [company, setCompany] = useDependentState(workExperience.company);
+  const startDate = workExperience.start_date.toDate();
+  const endDate = workExperience.end_date?.toDate();
 
   return (
     <Box position="relative" w="full" pb={10}>
@@ -49,7 +56,7 @@ const UserWorkExperienceItem: FC<UserWorkExperienceItemProps> = ({
       </VStack>
 
       {/* Main content */}
-      <VStack align="flex-start" pl="calc(1rem + 10px)" spacing={1.5} w="full">
+      <VStack align="flex-start" pl="calc(1rem + 10px)" spacing={1} w="full">
         <HStack w="full">
           {/* Job title */}
           <Editable
@@ -102,6 +109,59 @@ const UserWorkExperienceItem: FC<UserWorkExperienceItemProps> = ({
           <EditablePreview py={0} opacity={!company ? 0.3 : 1} />
           <EditableInput py={0} rounded="sm" />
         </Editable>
+
+        {/* Job start and end dates */}
+        <HStack fontSize="xs" color="subtext" py={1} spacing={1}>
+          {/* Start date */}
+          <DateInput
+            maxDate={new Date()}
+            selectedDate={startDate}
+            onSubmit={(date) =>
+              handleUpdateWorkExperience(workExperience.id, {
+                start_date: Timestamp.fromDate(date!),
+              })
+            }
+          >
+            <Button
+              variant="link"
+              size="xs"
+              fontWeight="normal"
+              color="subtext"
+              _focus={{ shadow: 'none' }}
+            >
+              {format(startDate, 'dd MMMM yyyy')}
+            </Button>
+          </DateInput>
+
+          <Text children="-" />
+
+          {/* End date */}
+          <DateInput
+            minDate={startDate}
+            cleanupLabel="I currently work here"
+            selectedDate={endDate}
+            onSubmit={(date) =>
+              handleUpdateWorkExperience(workExperience.id, {
+                end_date: date ? Timestamp.fromDate(date) : (null as any),
+              })
+            }
+          >
+            <Button
+              variant="link"
+              size="xs"
+              fontWeight="normal"
+              color="subtext"
+              _focus={{ shadow: 'none' }}
+            >
+              {endDate ? format(endDate, 'dd MMMM yyyy') : 'Present'}
+            </Button>
+          </DateInput>
+
+          {/* Distance */}
+          <Text color="primary">
+            ({formatDistanceStrict(endDate ?? new Date(), startDate)})
+          </Text>
+        </HStack>
 
         {/* Job description */}
         <Editable

@@ -16,13 +16,14 @@ const UserDateOfBirthInput: FC = () => {
         Date of birth
       </FormLabel>
       <DateInput
+        maxDate={new Date()}
         selectedDate={date}
-        onSubmit={(date) => handleUpdateValue(Timestamp.fromDate(date))}
+        onSubmit={(date) => handleUpdateValue(Timestamp.fromDate(date!))}
       >
         <HStack cursor="pointer" spacing={1}>
           {date ? (
             <>
-              <Text>{format(date, 'dd/MM/yyyy')}</Text>
+              <Text>{format(date, 'dd MMMM yyyy')}</Text>
               <Text fontWeight="semibold" color="primary">
                 ({differenceInCalendarYears(new Date(), date)} years old)
               </Text>

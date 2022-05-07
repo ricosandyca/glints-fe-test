@@ -1,33 +1,38 @@
 import {
+  Box,
+  Button,
   Popover,
+  PopoverArrow,
   PopoverTrigger as OrigPopoverTrigger,
   PopoverBody,
   PopoverContent,
   useDisclosure,
-  Box,
 } from '@chakra-ui/react';
 import { FC, memo, ReactNode, useCallback } from 'react';
-import DatePicker from 'react-datepicker';
+import DatePicker, { ReactDatePickerProps } from 'react-datepicker';
 
 export const PopoverTrigger: React.FC<{ children: React.ReactNode }> =
   OrigPopoverTrigger;
 
-export type DateInputProps = {
+export type DateInputProps = Partial<ReactDatePickerProps> & {
   selectedDate?: Date;
-  onSubmit?: (newDate: Date) => any;
+  onSubmit?: (newDate?: Date) => any;
+  cleanupLabel?: string;
   children: ReactNode;
 };
 
 const DateInput: FC<DateInputProps> = ({
   selectedDate,
   onSubmit,
+  cleanupLabel,
   children,
+  ...datepickerProps
 }) => {
   const { isOpen, onClose, onOpen } = useDisclosure({ defaultIsOpen: false });
 
   // close popover on date changed
   const handleSubmit = useCallback(
-    (date: Date) => {
+    (date?: Date) => {
       onSubmit && onSubmit(date);
       onClose();
     },
@@ -44,6 +49,7 @@ const DateInput: FC<DateInputProps> = ({
     >
       <PopoverTrigger>{children}</PopoverTrigger>
       <PopoverContent w="auto">
+        <PopoverArrow />
         <PopoverBody p={0}>
           <Box
             sx={{
@@ -54,13 +60,30 @@ const DateInput: FC<DateInputProps> = ({
           >
             <DatePicker
               selected={selectedDate}
-              onChange={handleSubmit}
+              onChange={(date) => {
+                handleSubmit(date ?? undefined);
+              }}
               scrollableYearDropdown
               showYearDropdown
               yearDropdownItemNumber={35}
               inline
+              {...datepickerProps}
             />
           </Box>
+          {cleanupLabel && (
+            <Box p={2}>
+              <Button
+                size="xs"
+                variant="link"
+                colorScheme="primary"
+                onClick={() => handleSubmit(undefined)}
+                fontWeight="medium"
+                isFullWidth
+              >
+                {cleanupLabel}
+              </Button>
+            </Box>
+          )}
         </PopoverBody>
       </PopoverContent>
     </Popover>
