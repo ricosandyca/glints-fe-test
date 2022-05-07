@@ -22,7 +22,12 @@ const UserProfilePictureInput: FC<BoxProps> = (props) => {
   const hoverBg = useColorModeValue('whiteAlpha.700', 'blackAlpha.700');
 
   return (
-    <Box onClick={() => thumbnailInputRef.current?.click()} {...props}>
+    <Box
+      transitionDuration=".2s"
+      onClick={() => thumbnailInputRef.current?.click()}
+      _hover={{ opacity: 0.5 }}
+      {...props}
+    >
       {/* Hidden file input */}
       <Input
         ref={thumbnailInputRef}
