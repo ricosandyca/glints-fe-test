@@ -39,8 +39,6 @@ const ImageInput: FC<ImageInputProps> = ({
       position="relative"
       transitionDuration=".2s"
       fontSize="5xl"
-      rounded="lg"
-      overflow="hidden"
       _hover={{
         '.delete-button': {
           opacity: 1,
@@ -89,6 +87,8 @@ const ImageInput: FC<ImageInputProps> = ({
         spacing={4}
         _hover={{ opacity: 0.5 }}
         onClick={() => thumbnailInputRef.current?.click()}
+        rounded={boxProps.rounded ?? 'lg'}
+        overflow="hidden"
       >
         <Center
           position="relative"

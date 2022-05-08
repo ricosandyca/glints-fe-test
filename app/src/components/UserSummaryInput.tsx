@@ -20,7 +20,7 @@ const UserSummaryInput: FC = () => {
         Professional Summary
       </FormLabel>
       <Editable
-        value={summary}
+        value={summary ?? ''}
         onChange={setSummary}
         onSubmit={handleUpdateValue}
         placeholder="Your professional summary..."

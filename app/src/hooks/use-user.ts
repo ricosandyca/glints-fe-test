@@ -74,12 +74,22 @@ export function useUserProfilePictureUploadAction() {
         handleUpdateProfilePicture,
       );
     },
-    [userId],
+    [userId, handleUpdateProfilePicture],
   );
+
+  const handleDeleteProfilePicture = useCallback(async () => {
+    await handleUpdateProfilePicture(null);
+  }, [handleUpdateProfilePicture]);
 
   const isLoading = isUpdating || isDownloading || isUploading;
 
-  return { handleUploadProfilePicture, downloadURL, percentage, isLoading };
+  return {
+    handleUploadProfilePicture,
+    handleDeleteProfilePicture,
+    downloadURL,
+    percentage,
+    isLoading,
+  };
 }
 
 export function useUserWorkExperiencesUpdateAction(workExperienceId?: string) {
@@ -188,7 +198,7 @@ export function useUserCompanyLogoUploadAction(workExperienceId: string) {
         });
       }
       // start uploading file to the cloud
-      // the upload user's profile picture on success
+      // the update the company logo in the user document
       handleUploadFile(
         getUserdataStoragePath(userId, file.name),
         file,
@@ -198,5 +208,15 @@ export function useUserCompanyLogoUploadAction(workExperienceId: string) {
     [userId, handleUpdateWorkExperience],
   );
 
-  return { handleUploadCompanyLogo, isLoading, downloadURL, percentage };
+  const handleDeleteCompanyLogo = useCallback(async () => {
+    await handleUpdateWorkExperience({ company_logo: null });
+  }, [handleUpdateWorkExperience]);
+
+  return {
+    handleUploadCompanyLogo,
+    handleDeleteCompanyLogo,
+    isLoading,
+    downloadURL,
+    percentage,
+  };
 }

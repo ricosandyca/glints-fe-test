@@ -5,12 +5,18 @@ import ImageInput from '~/components/ImageInput';
 import { useUserProfilePictureUploadAction } from '~/hooks/use-user';
 
 const UserProfilePictureInput: FC<BoxProps> = (props) => {
-  const { handleUploadProfilePicture, downloadURL, isLoading, percentage } =
-    useUserProfilePictureUploadAction();
+  const {
+    handleUploadProfilePicture,
+    handleDeleteProfilePicture,
+    downloadURL,
+    isLoading,
+    percentage,
+  } = useUserProfilePictureUploadAction();
 
   return (
     <ImageInput
       onFileUpload={handleUploadProfilePicture}
+      onDeleteFile={handleDeleteProfilePicture}
       previewImageURL={downloadURL}
       isUploading={isLoading}
       uploadPercentage={percentage}

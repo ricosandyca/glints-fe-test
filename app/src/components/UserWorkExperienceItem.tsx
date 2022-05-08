@@ -103,8 +103,13 @@ export const UserWorkExperienceItemContent: FC<
   const [company, setCompany] = useDependentState(workExperience!.company);
   const startDate = workExperience!.start_date.toDate();
   const endDate = workExperience!.end_date?.toDate();
-  const { handleUploadCompanyLogo, isLoading, percentage, downloadURL } =
-    useUserCompanyLogoUploadAction(workExperienceId);
+  const {
+    handleUploadCompanyLogo,
+    handleDeleteCompanyLogo,
+    isLoading,
+    percentage,
+    downloadURL,
+  } = useUserCompanyLogoUploadAction(workExperienceId);
 
   return (
     <VStack
@@ -120,6 +125,7 @@ export const UserWorkExperienceItemContent: FC<
         {/* Company logo */}
         <ImageInput
           onFileUpload={handleUploadCompanyLogo}
+          onDeleteFile={handleDeleteCompanyLogo}
           isUploading={isLoading}
           uploadPercentage={percentage}
           previewImageURL={downloadURL}

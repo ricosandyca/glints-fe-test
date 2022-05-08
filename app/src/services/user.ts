@@ -33,6 +33,9 @@ export async function initUser(uid: string, email: string) {
     work_experiences: [],
     email,
     uid,
+    date_of_birth: null,
+    profile_picture: null,
+    summary: null,
   };
   const userRef = db.collection(USERS_COLLECTION).doc(uid);
   await userRef.set(userData);

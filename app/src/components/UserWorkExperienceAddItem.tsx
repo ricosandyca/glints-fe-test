@@ -53,6 +53,9 @@ const UserWorkExperienceAddItem: FC<UserWorkExperienceAddItemProps> = ({
                 company: '',
                 job_title: '',
                 start_date: Timestamp.fromDate(new Date()),
+                company_logo: null,
+                end_date: null,
+                job_description: null,
               });
             }}
           />
