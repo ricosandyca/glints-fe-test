@@ -10,6 +10,7 @@ import {
 } from '@chakra-ui/react';
 import { FC } from 'react';
 import { BiLogOutCircle } from 'react-icons/bi';
+import { useRecoilValue } from 'recoil';
 import OnBoardingAlert from '~/components/OnBoardingAlert';
 import UserDateOfBirthInput from '~/components/UserDateOfBirthInput';
 
@@ -19,8 +20,13 @@ import UserSummaryInput from '~/components/UserSummaryInput';
 import UserWorkExperienceList from '~/components/UserWorkExperienceList';
 import { withContainer } from '~/hoc/with-container';
 import { useSignOutAction } from '~/hooks/use-auth';
+import { userState } from '~/store/user';
 
 const AppProfile: FC = () => {
+  const user = useRecoilValue(userState);
+
+  if (!user) return null;
+
   return (
     <Box position="relative" w="full">
       {/* Accent background */}
