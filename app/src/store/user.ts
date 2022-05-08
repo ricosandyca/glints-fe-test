@@ -20,4 +20,11 @@ export const userFieldValueState = selectorFamily<
       if (!user) return undefined;
       return user[key];
     },
+  set:
+    (key) =>
+    ({ get, set }, newValue) => {
+      const user = get(userState);
+      if (!user) return;
+      set(userState, { ...user, [key]: newValue });
+    },
 });

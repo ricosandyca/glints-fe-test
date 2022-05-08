@@ -1,6 +1,6 @@
 import { useToast } from '@chakra-ui/react';
 import { useCallback, useMemo, useState } from 'react';
-import { useRecoilValue } from 'recoil';
+import { SetterOrUpdater, useRecoilState, useRecoilValue } from 'recoil';
 import { getUserdataStoragePath } from '~/services/storage';
 
 import {
@@ -16,7 +16,10 @@ export function useUserUpdateAction<T extends keyof User>(key: T) {
   const userId = useRecoilValue(
     userFieldValueState('_id'),
   ) as UserDocument['_id'];
-  const value = useRecoilValue(userFieldValueState(key)) as User[T];
+  const [value, setValue] = useRecoilState(userFieldValueState(key)) as [
+    User[T],
+    SetterOrUpdater<User[T] | undefined>,
+  ];
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -27,6 +30,8 @@ export function useUserUpdateAction<T extends keyof User>(key: T) {
       try {
         setError(null);
         setIsLoading(true);
+        // immediately update local data
+        setValue(newValue);
         // update user data in firestore
         await updateUser(userId, { [key]: newValue });
       } catch (err: any) {
