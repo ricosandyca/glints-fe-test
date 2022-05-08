@@ -10,6 +10,7 @@ import {
 } from '@chakra-ui/react';
 import { FC } from 'react';
 import { BiLogOutCircle } from 'react-icons/bi';
+import OnBoardingAlert from '~/components/OnBoardingAlert';
 import UserDateOfBirthInput from '~/components/UserDateOfBirthInput';
 
 import UserNameInput from '~/components/UserNameInput';
@@ -47,6 +48,8 @@ const AppProfileContent: FC<StackProps> = withContainer((props) => {
         shadow="md"
         p={{ base: 6, md: 8, lg: 10 }}
       >
+        <OnBoardingAlert mb={6} />
+
         <Stack
           direction={{ base: 'column', lg: 'row' }}
           align="center"

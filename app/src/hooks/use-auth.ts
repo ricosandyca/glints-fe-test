@@ -1,10 +1,12 @@
 import { useCallback, useState } from 'react';
+import { useResetRecoilState } from 'recoil';
 
 import {
   signInWithPassword,
   signOut,
   signUpWithPassword,
 } from '~/services/auth';
+import { showOnBoardingAlert } from '~/store/auth';
 import { humanizeFirebaseErrorMessage } from '~/utils/firebase-auth';
 
 export function useSignUpWithPasswordAction() {
@@ -54,12 +56,14 @@ export function useSignInWithPasswordAction() {
 export function useSignOutAction() {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
+  const resetShowOnBoardingAlert = useResetRecoilState(showOnBoardingAlert);
 
   const handleSignOut = useCallback(async () => {
     try {
       setError(null);
       setIsLoading(true);
       await signOut();
+      resetShowOnBoardingAlert();
     } catch (err: any) {
       setError(humanizeFirebaseErrorMessage(err.message));
     } finally {
