@@ -2328,6 +2328,11 @@
   resolved "https://registry.yarnpkg.com/@types/scheduler/-/scheduler-0.16.2.tgz#1a62f89525723dde24ba1b01b092bf5df8ad4d39"
   integrity sha512-hppQEBDmlwhFAXKJX2KnWLYu5yMfi91yazPb2l+lbJiwW+wdo1gNeRA+3RgNSO39WYX2euey41KEwnqesU2Jew==
 
+"@types/smart-truncate@^1.0.2":
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/@types/smart-truncate/-/smart-truncate-1.0.2.tgz#9a58328da4de704554f08fe5359764d777fa720c"
+  integrity sha512-Zs6sRRlnal8ADE2E6LHcTujCfrGw0htB7iUnrvKEem+8QS6B8spFRvkdIdyY3C8KhnyJkGVR6zmcwWS9FNxfOw==
+
 "@types/trusted-types@^2.0.2":
   version "2.0.2"
   resolved "https://registry.yarnpkg.com/@types/trusted-types/-/trusted-types-2.0.2.tgz#fc25ad9943bcac11cceb8168db4f275e0e72e756"
@@ -4778,6 +4783,11 @@ slash@^3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/slash/-/slash-3.0.0.tgz#6539be870c165adbd5240220dbe361f1bc4d4634"
   integrity sha512-g9Q1haeby36OSStwb4ntCGGGaKsaVSjQ68fBxoQcutl5fS1vuY18H3wSt3jFyFtrkx+Kz0V1G85A4MyAdDMi2Q==
+
+smart-truncate@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/smart-truncate/-/smart-truncate-1.0.1.tgz#a2173d7abc724a5a30e1b63af88616228b14a475"
+  integrity sha512-f+kSLMDWKSCpYhwOZM+Da4d8klk5nY4gH57HOEOaaotsZEsTIm/51/9vKDNE26WjU72eBM1zEYdQl6uDwvZfLg==
 
 source-map-js@^1.0.2:
   version "1.0.2"

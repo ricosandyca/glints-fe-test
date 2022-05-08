@@ -51,3 +51,24 @@ export async function updateUser(userId: string, userData: Partial<User>) {
   await userRef.update(newUserData);
   return userRef.id;
 }
+
+export async function getUserByKey(
+  key: string,
+  excludeUserIds: string[] = [],
+): Promise<UserDocument | null> {
+  const userQuery = db
+    .collection(USERS_COLLECTION)
+    .where('key', '==', key)
+    .where(firebase.firestore.FieldPath.documentId(), 'not-in', excludeUserIds)
+    .limit(1);
+  const userQuerySnap = await userQuery.get();
+  let user: UserDocument | null = null;
+  userQuerySnap.forEach((snap) => {
+    if (!snap.exists) return;
+    user = {
+      ...(snap.data() as User),
+      _id: snap.id,
+    };
+  });
+  return user;
+}

@@ -7,7 +7,7 @@ import {
   useFileUploadAction,
   useFileURLFetcher,
 } from '~/hooks/use-file-upload';
-import { updateUser } from '~/services/user';
+import { getUserByKey, updateUser } from '~/services/user';
 import { userFieldValueState } from '~/store/user';
 import { User, UserDocument, UserWorkExperience } from '~/types/user';
 import { validateFileImage } from '~/utils/file';
@@ -34,8 +34,10 @@ export function useUserUpdateAction<T extends keyof User>(key: T) {
         setValue(newValue);
         // update user data in firestore
         await updateUser(userId, { [key]: newValue });
+        return true;
       } catch (err: any) {
         setError(err.message);
+        return false;
       } finally {
         setIsLoading(false);
       }
@@ -223,5 +225,60 @@ export function useUserCompanyLogoUploadAction(workExperienceId: string) {
     isLoading,
     downloadURL,
     percentage,
+  };
+}
+
+export function useUserKeyUpdateAction() {
+  const forbiddenKeys = ['auth', 'app'];
+  const toast = useToast();
+  const { userId, value, handleUpdateValue } = useUserUpdateAction('key');
+  const { value: isPublic, handleUpdateValue: handleUpdateIsPublic } =
+    useUserUpdateAction('is_public');
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const handleTogglePublicProfile = useCallback(() => {
+    handleUpdateIsPublic(!isPublic);
+  }, [isPublic, handleUpdateIsPublic]);
+
+  const handleUpdateUserKey = useCallback(
+    async (newKey: string) => {
+      // validate key
+      try {
+        setError(null);
+        setIsLoading(true);
+        // forbid using app routes
+        if (forbiddenKeys.includes(newKey))
+          throw new Error('Key is already used by the app');
+
+        // validate key with other user document
+        const user = await getUserByKey(newKey, [userId]);
+        // if the key is already in use
+        if (user) throw new Error('Key is already used by another user');
+
+        // update user data in firestore
+        await handleUpdateValue(newKey);
+        return true;
+      } catch (err: any) {
+        setError(err.message);
+        toast({
+          status: 'error',
+          title: err.message,
+        });
+        return false;
+      } finally {
+        setIsLoading(false);
+      }
+    },
+    [handleUpdateValue],
+  );
+
+  return {
+    key: value,
+    isPublic,
+    handleUpdateUserKey,
+    handleTogglePublicProfile,
+    isLoading,
+    error,
   };
 }

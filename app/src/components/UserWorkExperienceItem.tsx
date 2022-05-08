@@ -59,7 +59,7 @@ const UserWorkExperienceItem: FC<UserWorkExperienceItemProps> = ({
             {...provided.dragHandleProps}
           >
             {/* Drag icon */}
-            <Icon fontSize="sm" as={MdDragIndicator} />
+            <Icon color="subtext" fontSize="sm" as={MdDragIndicator} />
           </Box>
 
           {/* Dot */}

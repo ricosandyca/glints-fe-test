@@ -15,6 +15,7 @@ import OnBoardingAlert from '~/components/OnBoardingAlert';
 import UserDateOfBirthInput from '~/components/UserDateOfBirthInput';
 
 import UserNameInput from '~/components/UserNameInput';
+import UserProfileMenu from '~/components/UserProfileMenu';
 import UserProfilePictureInput from '~/components/UserProfilePictureInput';
 import UserSummaryInput from '~/components/UserSummaryInput';
 import UserWorkExperienceList from '~/components/UserWorkExperienceList';
@@ -47,6 +48,7 @@ const AppProfileContent: FC<StackProps> = withContainer((props) => {
 
   return (
     <VStack position="relative" w="full" spacing={6} {...props}>
+      {/* Main card */}
       <Box
         w="full"
         bg="fg"
@@ -56,50 +58,61 @@ const AppProfileContent: FC<StackProps> = withContainer((props) => {
       >
         <OnBoardingAlert mb={6} />
 
-        <Stack
-          direction={{ base: 'column', lg: 'row' }}
-          align="center"
-          spacing={8}
-          w="full"
-          mt={{ base: 10, lg: 0 }}
-        >
-          {/* Profile picture */}
-          <UserProfilePictureInput
-            alignSelf={{ base: 'center', lg: 'flex-start' }}
-            h="200px"
-            w="200px"
-          />
+        <Box position="relative">
+          {/* User menu */}
+          <UserProfileMenu position="absolute" top={0} right={0} />
 
-          <VStack w="full" flex={1} spacing={8} align="flex-start">
-            {/* Basic info input */}
-            <VStack
-              maxW="700px"
-              w="full"
-              alignSelf="flex-start"
-              spacing={6}
-              flex={1}
-            >
-              <UserNameInput />
-              <UserDateOfBirthInput />
-              <UserSummaryInput />
-            </VStack>
+          <Stack
+            direction={{ base: 'column', lg: 'row' }}
+            align="center"
+            spacing={8}
+            w="full"
+            mt={{ base: 10, lg: 0 }}
+          >
+            {/* Profile picture */}
+            <UserProfilePictureInput
+              alignSelf={{ base: 'center', lg: 'flex-start' }}
+              h="200px"
+              w="200px"
+            />
 
-            <Divider />
-
-            {/* Work experiences */}
-            <VStack maxW="700px" w="full" align="flex-start" spacing={4} pb={6}>
-              <Heading
-                fontSize="sm"
-                fontWeight="semibold"
-                textTransform="uppercase"
-                color="subtext"
+            <VStack w="full" flex={1} spacing={8} align="flex-start">
+              {/* Basic info input */}
+              <VStack
+                maxW="700px"
+                w="full"
+                alignSelf="flex-start"
+                spacing={6}
+                flex={1}
               >
-                Work Experiences
-              </Heading>
-              <UserWorkExperienceList />
+                <UserNameInput />
+                <UserDateOfBirthInput />
+                <UserSummaryInput />
+              </VStack>
+
+              <Divider />
+
+              {/* Work experiences */}
+              <VStack
+                maxW="700px"
+                w="full"
+                align="flex-start"
+                spacing={4}
+                pb={6}
+              >
+                <Heading
+                  fontSize="sm"
+                  fontWeight="semibold"
+                  textTransform="uppercase"
+                  color="subtext"
+                >
+                  Work Experiences
+                </Heading>
+                <UserWorkExperienceList />
+              </VStack>
             </VStack>
-          </VStack>
-        </Stack>
+          </Stack>
+        </Box>
       </Box>
 
       {/* Signout button */}

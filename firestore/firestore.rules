@@ -5,12 +5,8 @@ service cloud.firestore {
     	function isOwnResource() {
       	return request.auth != null && request.auth.uid == userId;
       }
-      
-      function isPublicResource() {
-      	return get(/databases/$(database)/documents/users/$(userId)).data.is_public;
-      }
     	
-    	allow read: if isOwnResource() || isPublicResource();
+    	allow read: if true;
       allow write: if isOwnResource();
     }
   }

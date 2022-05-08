@@ -11,6 +11,8 @@ import {
 import { FC, memo, ReactNode, useCallback } from 'react';
 import DatePicker, { ReactDatePickerProps } from 'react-datepicker';
 
+// chakra library issue
+// @see: https://github.com/chakra-ui/chakra-ui/issues/5896
 export const PopoverTrigger: React.FC<{ children: React.ReactNode }> =
   OrigPopoverTrigger;
 
@@ -32,7 +34,7 @@ const DateInput: FC<DateInputProps> = ({
 
   // close popover on date changed
   const handleSubmit = useCallback(
-    (date?: Date) => {
+    (date: Date | null) => {
       onSubmit && onSubmit(date);
       onClose();
     },
@@ -45,6 +47,7 @@ const DateInput: FC<DateInputProps> = ({
       isOpen={isOpen}
       onClose={onClose}
       onOpen={onOpen}
+      closeOnBlur
       isLazy
     >
       <PopoverTrigger>{children}</PopoverTrigger>
@@ -74,7 +77,7 @@ const DateInput: FC<DateInputProps> = ({
                 size="xs"
                 variant="link"
                 colorScheme="primary"
-                onClick={() => handleSubmit(undefined)}
+                onClick={() => handleSubmit(null)}
                 fontWeight="medium"
                 isFullWidth
               >
