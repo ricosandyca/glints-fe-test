@@ -16,7 +16,7 @@ export const PopoverTrigger: React.FC<{ children: React.ReactNode }> =
 
 export type DateInputProps = Partial<ReactDatePickerProps> & {
   selectedDate?: Date;
-  onSubmit?: (newDate?: Date) => any;
+  onSubmit?: (newDate: Date | null) => any;
   cleanupLabel?: string;
   children: ReactNode;
 };
@@ -60,9 +60,7 @@ const DateInput: FC<DateInputProps> = ({
           >
             <DatePicker
               selected={selectedDate}
-              onChange={(date) => {
-                handleSubmit(date ?? undefined);
-              }}
+              onChange={handleSubmit}
               scrollableYearDropdown
               showYearDropdown
               yearDropdownItemNumber={35}

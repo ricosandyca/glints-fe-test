@@ -130,8 +130,8 @@ export const UserWorkExperienceItemContent: FC<
           uploadPercentage={percentage}
           previewImageURL={downloadURL}
           fontSize="2xl"
-          h="74px"
-          w="74px"
+          h="70px"
+          w="70px"
           rounded="none"
         />
 
@@ -164,12 +164,13 @@ export const UserWorkExperienceItemContent: FC<
             >
               <IconButton
                 aria-label="Delete work button"
-                size="sm"
+                size="xs"
                 colorScheme="red"
                 variant="ghost"
                 rounded="full"
                 icon={<Icon fontSize="md" as={AiOutlineDelete} />}
                 onClick={() => handleDeleteWorkExperience()}
+                m={0}
               />
             </Tooltip>
           </HStack>
@@ -223,7 +224,7 @@ export const UserWorkExperienceItemContent: FC<
               selectedDate={endDate}
               onSubmit={(date) =>
                 handleUpdateWorkExperience({
-                  end_date: date ? Timestamp.fromDate(date) : (null as any),
+                  end_date: date ? Timestamp.fromDate(date) : null,
                 })
               }
             >
@@ -249,7 +250,7 @@ export const UserWorkExperienceItemContent: FC<
       {/* Job description */}
       <Editable
         color="subtext"
-        value={jobDesc}
+        value={jobDesc ?? ''}
         onChange={setJobDesc}
         onSubmit={(value) =>
           handleUpdateWorkExperience({

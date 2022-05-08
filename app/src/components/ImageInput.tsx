@@ -4,7 +4,6 @@ import {
   Center,
   Icon,
   IconButton,
-  Image,
   Input,
   Progress,
   useColorModeValue,
@@ -59,7 +58,7 @@ const ImageInput: FC<ImageInputProps> = ({
         hidden
       />
 
-      {onDeleteFile && (
+      {previewImageURL && onDeleteFile && (
         <IconButton
           className="delete-button"
           opacity={0}
@@ -107,15 +106,14 @@ const ImageInput: FC<ImageInputProps> = ({
           )}
 
           {previewImageURL && (
-            <Image
-              position="absolute"
+            <Box
               zIndex={2}
               top={0}
               h="full"
               w="full"
-              alt="Course image"
-              src={previewImageURL}
-              objectFit="cover"
+              bg={`url(${previewImageURL})`}
+              bgSize="cover"
+              bgPos="center"
             />
           )}
 
