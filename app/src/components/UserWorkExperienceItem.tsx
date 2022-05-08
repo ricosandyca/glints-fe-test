@@ -44,16 +44,18 @@ const UserWorkExperienceItem: FC<UserWorkExperienceItemProps> = ({
           _hover={{ '.drag-indicator': { opacity: 1 } }}
           {...provided.draggableProps}
         >
-          {/* Drag icon */}
+          {/* Drag item hot zone */}
           <Box
             className="drag-indicator"
             opacity={snapshot.isDragging ? 1 : 0}
             transitionDuration=".2s"
             position="absolute"
-            top="14px"
-            left={-5}
+            top="6px"
+            p={2}
+            left={-7}
             {...provided.dragHandleProps}
           >
+            {/* Drag icon */}
             <Icon fontSize="sm" as={MdDragIndicator} />
           </Box>
 

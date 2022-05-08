@@ -81,7 +81,7 @@ const AppProfileContent: FC<StackProps> = withContainer((props) => {
             <Divider />
 
             {/* Work experiences */}
-            <VStack maxW="700px" w="full" align="flex-start" spacing={4}>
+            <VStack maxW="700px" w="full" align="flex-start" spacing={4} pb={6}>
               <Heading
                 fontSize="sm"
                 fontWeight="semibold"
