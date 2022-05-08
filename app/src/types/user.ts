@@ -18,7 +18,7 @@ export type User = {
   uid: string;
   email: string;
   key: string; // unique user key to define their vanity URL
-  is_private: boolean; // to determine is the user's profile is viewable to other users
+  is_public: boolean; // to determine is the user's profile is viewable to other users
   name: string;
   summary: string | null;
   profile_picture: string | null;

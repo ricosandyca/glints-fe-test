@@ -27,7 +27,7 @@ export async function initUser(uid: string, email: string) {
   const userData: User = {
     created_at: Timestamp.fromDate(new Date()),
     updated_at: Timestamp.fromDate(new Date()),
-    is_private: true,
+    is_public: false,
     key: uuidv4(),
     name: defaultName,
     work_experiences: [],
