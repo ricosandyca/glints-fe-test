@@ -1,7 +1,6 @@
 import {
   Box,
   Button,
-  Center,
   Editable,
   EditableInput,
   EditablePreview,
@@ -16,7 +15,9 @@ import {
 import { format, formatDistanceStrict } from 'date-fns';
 import { Timestamp } from 'firebase/firestore';
 import { FC, memo } from 'react';
+import { Draggable } from 'react-beautiful-dnd';
 import { AiOutlineDelete } from 'react-icons/ai';
+import { MdDragIndicator } from 'react-icons/md';
 
 import DateInput from '~/components/DateInput';
 import useDependentState from '~/hooks/use-dependent-state';
@@ -25,13 +26,66 @@ import { UserWorkExperience } from '~/types/user';
 
 export type UserWorkExperienceItemProps = {
   workExperience: UserWorkExperience;
-  isLastItem?: boolean;
+  index: number;
 };
 
 const UserWorkExperienceItem: FC<UserWorkExperienceItemProps> = ({
   workExperience,
-  isLastItem,
+  index,
 }) => {
+  return (
+    <Draggable draggableId={workExperience.id} index={index}>
+      {(provided, snapshot) => (
+        <Box
+          ref={provided.innerRef}
+          position="relative"
+          w="full"
+          pb={8}
+          _hover={{ '.drag-indicator': { opacity: 1 } }}
+          {...provided.draggableProps}
+        >
+          {/* Drag icon */}
+          <Box
+            className="drag-indicator"
+            opacity={snapshot.isDragging ? 1 : 0}
+            transitionDuration=".2s"
+            position="absolute"
+            top="14px"
+            left={-5}
+            {...provided.dragHandleProps}
+          >
+            <Icon fontSize="sm" as={MdDragIndicator} />
+          </Box>
+
+          {/* Dot */}
+          <Box
+            position="absolute"
+            zIndex={5}
+            top="20px"
+            left={0}
+            h="10px"
+            w="10px"
+            bg="primary"
+            rounded="full"
+          />
+
+          {/* Main content */}
+          <MemoizedUserWorkExperienceItemContent
+            workExperience={workExperience}
+          />
+        </Box>
+      )}
+    </Draggable>
+  );
+};
+
+export type UserWorkExperienceItemContentProps = {
+  workExperience: UserWorkExperience;
+};
+
+export const UserWorkExperienceItemContent: FC<
+  UserWorkExperienceItemContentProps
+> = ({ workExperience }) => {
   const { handleUpdateWorkExperience, handleDeleteWorkExperience } =
     useUserWorkExperiencesUpdateAction();
   const [jobTitle, setJobTitle] = useDependentState(workExperience.job_title);
@@ -43,145 +97,145 @@ const UserWorkExperienceItem: FC<UserWorkExperienceItemProps> = ({
   const endDate = workExperience.end_date?.toDate();
 
   return (
-    <Box position="relative" w="full" pb={10}>
-      {/* Dot divider */}
-      <VStack position="absolute" h="full" top={3} left={0} spacing={0}>
-        <Box w="10px" h="10px" bg="primary" rounded="full" />
-        <Center
-          flex={1}
-          borderLeftWidth="2px"
-          borderStyle="dashed"
-          hidden={isLastItem}
-        />
-      </VStack>
-
-      {/* Main content */}
-      <VStack align="flex-start" pl="calc(1rem + 10px)" spacing={1} w="full">
-        <HStack w="full">
-          {/* Job title */}
-          <Editable
-            fontSize="lg"
-            fontWeight="medium"
-            value={jobTitle}
-            onChange={setJobTitle}
-            onSubmit={(value) =>
-              handleUpdateWorkExperience(workExperience.id, {
-                job_title: value,
-              })
-            }
-            placeholder="Job title..."
-            w="full"
-          >
-            <EditablePreview py={0} opacity={!jobTitle ? 0.3 : 1} />
-            <EditableInput py={0} rounded="sm" />
-          </Editable>
-
-          {/* Delete button */}
-          <Tooltip
-            label="Delete work experience"
-            rounded="lg"
-            placement="left"
-            hasArrow
-          >
-            <IconButton
-              aria-label="Delete work button"
-              size="sm"
-              colorScheme="red"
-              variant="ghost"
-              rounded="full"
-              icon={<Icon fontSize="md" as={AiOutlineDelete} />}
-              onClick={() => handleDeleteWorkExperience(workExperience.id)}
-            />
-          </Tooltip>
-        </HStack>
-
-        {/* Company name */}
+    <VStack
+      align="flex-start"
+      ml="1rem"
+      pl="10px"
+      py={2}
+      spacing={1}
+      w="full"
+      bg="fg"
+    >
+      <HStack w="full">
+        {/* Job title */}
         <Editable
-          fontSize="sm"
-          value={company}
-          onChange={setCompany}
+          fontSize="lg"
+          fontWeight="medium"
+          value={jobTitle}
+          onChange={setJobTitle}
           onSubmit={(value) =>
-            handleUpdateWorkExperience(workExperience.id, { company: value })
+            handleUpdateWorkExperience(workExperience.id, {
+              job_title: value,
+            })
           }
-          placeholder="Company name..."
+          placeholder="Job title..."
           w="full"
         >
-          <EditablePreview py={0} opacity={!company ? 0.3 : 1} />
+          <EditablePreview py={0} opacity={!jobTitle ? 0.3 : 1} />
           <EditableInput py={0} rounded="sm" />
         </Editable>
 
-        {/* Job start and end dates */}
-        <HStack fontSize="xs" color="subtext" py={1} spacing={1}>
-          {/* Start date */}
-          <DateInput
-            maxDate={new Date()}
-            selectedDate={startDate}
-            onSubmit={(date) =>
-              handleUpdateWorkExperience(workExperience.id, {
-                start_date: Timestamp.fromDate(date!),
-              })
-            }
-          >
-            <Button
-              variant="link"
-              size="xs"
-              fontWeight="normal"
-              color="subtext"
-              _focus={{ shadow: 'none' }}
-            >
-              {format(startDate, 'dd MMMM yyyy')}
-            </Button>
-          </DateInput>
+        {/* Delete button */}
+        <Tooltip
+          label="Delete work experience"
+          rounded="lg"
+          placement="left"
+          hasArrow
+        >
+          <IconButton
+            aria-label="Delete work button"
+            size="sm"
+            colorScheme="red"
+            variant="ghost"
+            rounded="full"
+            icon={<Icon fontSize="md" as={AiOutlineDelete} />}
+            onClick={() => handleDeleteWorkExperience(workExperience.id)}
+          />
+        </Tooltip>
+      </HStack>
 
-          <Text children="-" />
+      {/* Company name */}
+      <Editable
+        fontSize="sm"
+        value={company}
+        onChange={setCompany}
+        onSubmit={(value) =>
+          handleUpdateWorkExperience(workExperience.id, {
+            company: value,
+          })
+        }
+        placeholder="Company name..."
+        w="full"
+      >
+        <EditablePreview py={0} opacity={!company ? 0.3 : 1} />
+        <EditableInput py={0} rounded="sm" />
+      </Editable>
 
-          {/* End date */}
-          <DateInput
-            minDate={startDate}
-            cleanupLabel="I currently work here"
-            selectedDate={endDate}
-            onSubmit={(date) =>
-              handleUpdateWorkExperience(workExperience.id, {
-                end_date: date ? Timestamp.fromDate(date) : (null as any),
-              })
-            }
-          >
-            <Button
-              variant="link"
-              size="xs"
-              fontWeight="normal"
-              color="subtext"
-              _focus={{ shadow: 'none' }}
-            >
-              {endDate ? format(endDate, 'dd MMMM yyyy') : 'Present'}
-            </Button>
-          </DateInput>
-
-          {/* Distance */}
-          <Text color="primary">
-            ({formatDistanceStrict(endDate ?? new Date(), startDate)})
-          </Text>
-        </HStack>
-
-        {/* Job description */}
-        <Editable
-          color="subtext"
-          value={jobDesc}
-          onChange={setJobDesc}
-          onSubmit={(value) =>
+      {/* Job start and end dates */}
+      <HStack fontSize="xs" color="subtext" py={1} spacing={1}>
+        {/* Start date */}
+        <DateInput
+          maxDate={new Date()}
+          selectedDate={startDate}
+          onSubmit={(date) =>
             handleUpdateWorkExperience(workExperience.id, {
-              job_description: value,
+              start_date: Timestamp.fromDate(date!),
             })
           }
-          placeholder="Job description..."
-          w="full"
         >
-          <EditablePreview py={0} opacity={!jobDesc ? 0.3 : 1} />
-          <EditableTextarea py={0} rounded="sm" minH="120px" />
-        </Editable>
-      </VStack>
-    </Box>
+          <Button
+            variant="link"
+            size="xs"
+            fontWeight="normal"
+            color="subtext"
+            _focus={{ shadow: 'none' }}
+          >
+            {format(startDate, 'dd MMMM yyyy')}
+          </Button>
+        </DateInput>
+
+        <Text children="-" />
+
+        {/* End date */}
+        <DateInput
+          minDate={startDate}
+          cleanupLabel="I currently work here"
+          selectedDate={endDate}
+          onSubmit={(date) =>
+            handleUpdateWorkExperience(workExperience.id, {
+              end_date: date ? Timestamp.fromDate(date) : (null as any),
+            })
+          }
+        >
+          <Button
+            variant="link"
+            size="xs"
+            fontWeight="normal"
+            color="subtext"
+            _focus={{ shadow: 'none' }}
+          >
+            {endDate ? format(endDate, 'dd MMMM yyyy') : 'Present'}
+          </Button>
+        </DateInput>
+
+        {/* Distance */}
+        <Text color="primary">
+          ({formatDistanceStrict(endDate ?? new Date(), startDate)})
+        </Text>
+      </HStack>
+
+      {/* Job description */}
+      <Editable
+        color="subtext"
+        value={jobDesc}
+        onChange={setJobDesc}
+        onSubmit={(value) =>
+          handleUpdateWorkExperience(workExperience.id, {
+            job_description: value,
+          })
+        }
+        placeholder="Job description..."
+        w="full"
+      >
+        <EditablePreview py={0} opacity={!jobDesc ? 0.3 : 1} />
+        <EditableTextarea py={0} rounded="sm" minH="120px" />
+      </Editable>
+    </VStack>
   );
 };
+
+export const MemoizedUserWorkExperienceItemContent = memo(
+  UserWorkExperienceItemContent,
+);
 
 export default memo(UserWorkExperienceItem);

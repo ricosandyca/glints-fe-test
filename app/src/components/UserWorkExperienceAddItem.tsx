@@ -28,7 +28,7 @@ const UserWorkExperienceAddItem: FC<UserWorkExperienceAddItemProps> = ({
       <HStack
         position="absolute"
         h="full"
-        top={0}
+        top="8px"
         left={isListEmpty ? 0 : 1.5}
         spacing={0}
       >

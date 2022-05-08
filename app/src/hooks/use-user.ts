@@ -22,8 +22,8 @@ export function useUserUpdateAction<T extends keyof User>(key: T) {
 
   const handleUpdateValue = useCallback(
     async (newValue: User[T]) => {
-      // prevent unnecessary updating
-      if (JSON.stringify(newValue) === JSON.stringify(value)) return;
+      // prevent unnecessary update
+      if (newValue === value) return;
       try {
         setError(null);
         setIsLoading(true);
@@ -35,7 +35,7 @@ export function useUserUpdateAction<T extends keyof User>(key: T) {
         setIsLoading(false);
       }
     },
-    [userId],
+    [userId, value],
   );
 
   return { userId, value, handleUpdateValue, isLoading, error };
@@ -109,6 +109,11 @@ export function useUserWorkExperiencesUpdateAction() {
         if (we.id === workExperienceId) return { ...we, ...data };
         return we;
       });
+      // prevent unnecessary update
+      if (
+        JSON.stringify(newWorkExperiences) === JSON.stringify(workExperiences)
+      )
+        return;
       await handleUpdateWorkExperiences(newWorkExperiences);
     },
     [workExperiences],
@@ -132,6 +137,7 @@ export function useUserWorkExperiencesUpdateAction() {
   );
 
   return {
+    workExperiences,
     handleUpdateWorkExperience,
     handleAddWorkExperience,
     handleReplaceWorkExperiences,

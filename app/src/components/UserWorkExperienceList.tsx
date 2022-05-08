@@ -1,24 +1,59 @@
 import { Box } from '@chakra-ui/react';
 import { FC, memo } from 'react';
+import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 
+import UserWorkExperienceAddItem from '~/components/UserWorkExperienceAddItem';
 import UserWorkExperienceItem from '~/components/UserWorkExperienceItem';
-import { useUserUpdateAction } from '~/hooks/use-user';
-import UserWorkExperienceAddItem from './UserWorkExperienceAddItem';
+import { useDND } from '~/hooks/use-dnd';
+import { useUserWorkExperiencesUpdateAction } from '~/hooks/use-user';
 
 const UserWorkExperienceList: FC = () => {
-  const { value: workExperiences } = useUserUpdateAction('work_experiences');
+  const { workExperiences, handleReplaceWorkExperiences } =
+    useUserWorkExperiencesUpdateAction();
+  const { handleDragStart, handleDragEnd } = useDND(
+    workExperiences,
+    handleReplaceWorkExperiences,
+  );
 
   return (
-    <Box position="relative" w="full">
-      {(workExperiences || []).map((we) => (
-        <UserWorkExperienceItem key={we.id} workExperience={we} />
-      ))}
+    <DragDropContext onDragStart={handleDragStart} onDragEnd={handleDragEnd}>
+      <Droppable droppableId="work-experience-list" direction="vertical">
+        {(provided) => (
+          <Box
+            ref={provided.innerRef}
+            position="relative"
+            w="full"
+            {...provided.droppableProps}
+          >
+            {/* Divider */}
+            <Box
+              position="absolute"
+              zIndex={2}
+              top={5}
+              left={1}
+              h="calc(100% - 23px)"
+              borderLeftWidth="2px"
+              borderStyle="dashed"
+            />
 
-      {/* Add work experience */}
-      <UserWorkExperienceAddItem
-        isListEmpty={!workExperiences || workExperiences.length <= 0}
-      />
-    </Box>
+            {(workExperiences || []).map((we, i) => (
+              <UserWorkExperienceItem
+                key={we.id}
+                workExperience={we}
+                index={i}
+              />
+            ))}
+
+            {provided.placeholder}
+
+            {/* Add work experience */}
+            <UserWorkExperienceAddItem
+              isListEmpty={!workExperiences || workExperiences.length <= 0}
+            />
+          </Box>
+        )}
+      </Droppable>
+    </DragDropContext>
   );
 };
 
