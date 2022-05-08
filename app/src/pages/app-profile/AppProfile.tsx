@@ -61,7 +61,7 @@ const AppProfileContent: FC<StackProps> = withContainer((props) => {
             w="200px"
           />
 
-          <VStack flex={1} spacing={8} align="flex-start">
+          <VStack w="full" flex={1} spacing={8} align="flex-start">
             {/* Basic info input */}
             <VStack
               maxW="700px"
