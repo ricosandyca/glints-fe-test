@@ -84,12 +84,14 @@ export function useUserProfilePictureUploadAction() {
 
 export function useUserWorkExperiencesUpdateAction(workExperienceId?: string) {
   const {
+    userId,
     value: workExperiences,
     handleUpdateValue: handleUpdateWorkExperiences,
     isLoading,
     error,
   } = useUserUpdateAction('work_experiences');
 
+  // get single work experience data
   const workExperience = useMemo(() => {
     return workExperiences.find(({ id }) => id === workExperienceId);
   }, [workExperienceId, workExperiences]);
@@ -137,6 +139,7 @@ export function useUserWorkExperiencesUpdateAction(workExperienceId?: string) {
   }, [workExperiences]);
 
   return {
+    userId,
     workExperience,
     workExperiences,
     handleUpdateWorkExperience,
@@ -146,4 +149,54 @@ export function useUserWorkExperiencesUpdateAction(workExperienceId?: string) {
     isLoading,
     error,
   };
+}
+
+export function useUserCompanyLogoUploadAction(workExperienceId: string) {
+  const toast = useToast();
+  const workExperiences = useRecoilValue(
+    userFieldValueState('work_experiences'),
+  ) as UserWorkExperience[];
+
+  // get single work experience data
+  const workExperience = useMemo(() => {
+    return workExperiences.find(({ id }) => id === workExperienceId);
+  }, [workExperienceId, workExperiences]);
+
+  const {
+    userId,
+    handleUpdateWorkExperience,
+    isLoading: isUpdating,
+  } = useUserWorkExperiencesUpdateAction(workExperienceId);
+  const {
+    isLoading: isUploading,
+    handleUploadFile,
+    percentage,
+  } = useFileUploadAction();
+  const { isLoading: isDownloading, downloadURL } = useFileURLFetcher(
+    workExperience?.company_logo,
+  );
+
+  const isLoading = isUpdating || isDownloading || isUploading;
+
+  const handleUploadCompanyLogo = useCallback(
+    async (file: File) => {
+      // validate profile picture
+      if (!validateFileImage(file)) {
+        return toast({
+          status: 'error',
+          title: 'Invalid image',
+        });
+      }
+      // start uploading file to the cloud
+      // the upload user's profile picture on success
+      handleUploadFile(
+        getUserdataStoragePath(userId, file.name),
+        file,
+        (fileURL) => handleUpdateWorkExperience({ company_logo: fileURL }),
+      );
+    },
+    [userId, handleUpdateWorkExperience],
+  );
+
+  return { handleUploadCompanyLogo, isLoading, downloadURL, percentage };
 }

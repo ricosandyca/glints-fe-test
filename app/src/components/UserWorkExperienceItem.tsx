@@ -8,7 +8,6 @@ import {
   HStack,
   Icon,
   IconButton,
-  Image,
   Text,
   Tooltip,
   VStack,
@@ -22,7 +21,11 @@ import { MdDragIndicator } from 'react-icons/md';
 
 import DateInput from '~/components/DateInput';
 import useDependentState from '~/hooks/use-dependent-state';
-import { useUserWorkExperiencesUpdateAction } from '~/hooks/use-user';
+import {
+  useUserCompanyLogoUploadAction,
+  useUserWorkExperiencesUpdateAction,
+} from '~/hooks/use-user';
+import ImageInput from './ImageInput';
 
 export type UserWorkExperienceItemProps = {
   workExperienceId: string;
@@ -100,9 +103,8 @@ export const UserWorkExperienceItemContent: FC<
   const [company, setCompany] = useDependentState(workExperience!.company);
   const startDate = workExperience!.start_date.toDate();
   const endDate = workExperience!.end_date?.toDate();
-
-  const image =
-    'https://angel.co/cdn-cgi/image/width=60,height=60,format=auto,fit=scale-down/https://photos.angel.co/startups/i/8193732-a092106a88ddf90fc080c1876173b28b-medium_jpg.jpg?buster=1622717104';
+  const { handleUploadCompanyLogo, isLoading, percentage, downloadURL } =
+    useUserCompanyLogoUploadAction(workExperienceId);
 
   return (
     <VStack
@@ -116,15 +118,18 @@ export const UserWorkExperienceItemContent: FC<
     >
       <HStack w="full" spacing={3}>
         {/* Company logo */}
-        <Image
-          alt="Company logo"
-          src={image}
+        <ImageInput
+          onFileUpload={handleUploadCompanyLogo}
+          isUploading={isLoading}
+          uploadPercentage={percentage}
+          previewImageURL={downloadURL}
+          fontSize="2xl"
           h="74px"
           w="74px"
-          alignSelf="center"
+          rounded="none"
         />
 
-        <VStack w="full" align="flex-start" spacing={0.5}>
+        <VStack flex={1} w="full" align="flex-start" spacing={0.5}>
           <HStack w="full">
             {/* Job title */}
             <Editable

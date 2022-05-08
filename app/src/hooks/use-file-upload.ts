@@ -26,13 +26,13 @@ export function useFileUploadAction() {
 }
 
 export function useFileURLFetcher(fileURL: string | null | undefined) {
-  const [downloadURL, setDownloadURl] = useState<string | null>(null);
+  const [downloadURL, setDownloadURl] = useState<string | undefined>();
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     if (!fileURL) {
-      setDownloadURl(null);
+      setDownloadURl(undefined);
       setIsLoading(false);
       return;
     }
