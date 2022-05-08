@@ -4,7 +4,7 @@ import { Navigate } from 'react-router-dom';
 import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 
 import Loading from '~/pages/loading';
-import { getUserListener, initUser } from '~/services/user';
+import { getUserListener } from '~/services/user';
 import { authState } from '~/store/auth';
 import { userState } from '~/store/user';
 
@@ -36,9 +36,6 @@ export function withFirebaseAuth<T>(Content: ComponentType<T>): FC<T> {
 
       // if user authenticated
       return getUserListener(uid, async (user) => {
-        // optionally create a new user document
-        // if current user doesn't have it yet
-        if (!user) return await initUser(auth.uid, auth.email);
         setUser(user);
         setIsUserReady(true);
       });
