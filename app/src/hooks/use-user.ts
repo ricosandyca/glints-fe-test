@@ -1,5 +1,5 @@
 import { useToast } from '@chakra-ui/react';
-import { useCallback, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { useRecoilValue } from 'recoil';
 import { getUserdataStoragePath } from '~/services/storage';
 
@@ -82,13 +82,17 @@ export function useUserProfilePictureUploadAction() {
   return { handleUploadProfilePicture, downloadURL, percentage, isLoading };
 }
 
-export function useUserWorkExperiencesUpdateAction() {
+export function useUserWorkExperiencesUpdateAction(workExperienceId?: string) {
   const {
     value: workExperiences,
     handleUpdateValue: handleUpdateWorkExperiences,
     isLoading,
     error,
   } = useUserUpdateAction('work_experiences');
+
+  const workExperience = useMemo(() => {
+    return workExperiences.find(({ id }) => id === workExperienceId);
+  }, [workExperienceId, workExperiences]);
 
   const handleAddWorkExperience = useCallback(
     async (newWorkExperience: UserWorkExperience) => {
@@ -101,10 +105,8 @@ export function useUserWorkExperiencesUpdateAction() {
   );
 
   const handleUpdateWorkExperience = useCallback(
-    async (
-      workExperienceId: string,
-      data: Partial<Omit<UserWorkExperience, 'id'>>,
-    ) => {
+    async (data: Partial<Omit<UserWorkExperience, 'id'>>) => {
+      if (!workExperienceId) return;
       const newWorkExperiences = workExperiences.map((we) => {
         if (we.id === workExperienceId) return { ...we, ...data };
         return we;
@@ -116,7 +118,7 @@ export function useUserWorkExperiencesUpdateAction() {
         return;
       await handleUpdateWorkExperiences(newWorkExperiences);
     },
-    [workExperiences],
+    [workExperiences, workExperienceId],
   );
 
   const handleReplaceWorkExperiences = useCallback(
@@ -126,17 +128,16 @@ export function useUserWorkExperiencesUpdateAction() {
     [],
   );
 
-  const handleDeleteWorkExperience = useCallback(
-    async (workExperienceId: string) => {
-      const newWorkExperiences = workExperiences.filter(
-        ({ id }) => workExperienceId !== id,
-      );
-      await handleUpdateWorkExperiences(newWorkExperiences);
-    },
-    [workExperiences],
-  );
+  const handleDeleteWorkExperience = useCallback(async () => {
+    if (!workExperienceId) return;
+    const newWorkExperiences = workExperiences.filter(
+      ({ id }) => workExperienceId !== id,
+    );
+    await handleUpdateWorkExperiences(newWorkExperiences);
+  }, [workExperiences]);
 
   return {
+    workExperience,
     workExperiences,
     handleUpdateWorkExperience,
     handleAddWorkExperience,

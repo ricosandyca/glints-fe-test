@@ -39,7 +39,7 @@ const UserWorkExperienceList: FC = () => {
             {(workExperiences || []).map((we, i) => (
               <UserWorkExperienceItem
                 key={we.id}
-                workExperience={we}
+                workExperienceId={we.id}
                 index={i}
               />
             ))}

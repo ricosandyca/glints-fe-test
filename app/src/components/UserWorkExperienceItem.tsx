@@ -8,6 +8,7 @@ import {
   HStack,
   Icon,
   IconButton,
+  Image,
   Text,
   Tooltip,
   VStack,
@@ -22,19 +23,18 @@ import { MdDragIndicator } from 'react-icons/md';
 import DateInput from '~/components/DateInput';
 import useDependentState from '~/hooks/use-dependent-state';
 import { useUserWorkExperiencesUpdateAction } from '~/hooks/use-user';
-import { UserWorkExperience } from '~/types/user';
 
 export type UserWorkExperienceItemProps = {
-  workExperience: UserWorkExperience;
+  workExperienceId: string;
   index: number;
 };
 
 const UserWorkExperienceItem: FC<UserWorkExperienceItemProps> = ({
-  workExperience,
+  workExperienceId,
   index,
 }) => {
   return (
-    <Draggable draggableId={workExperience.id} index={index}>
+    <Draggable draggableId={workExperienceId} index={index}>
       {(provided, snapshot) => (
         <Box
           ref={provided.innerRef}
@@ -73,7 +73,7 @@ const UserWorkExperienceItem: FC<UserWorkExperienceItemProps> = ({
 
           {/* Main content */}
           <MemoizedUserWorkExperienceItemContent
-            workExperience={workExperience}
+            workExperienceId={workExperienceId}
           />
         </Box>
       )}
@@ -82,138 +82,157 @@ const UserWorkExperienceItem: FC<UserWorkExperienceItemProps> = ({
 };
 
 export type UserWorkExperienceItemContentProps = {
-  workExperience: UserWorkExperience;
+  workExperienceId: string;
 };
 
 export const UserWorkExperienceItemContent: FC<
   UserWorkExperienceItemContentProps
-> = ({ workExperience }) => {
-  const { handleUpdateWorkExperience, handleDeleteWorkExperience } =
-    useUserWorkExperiencesUpdateAction();
-  const [jobTitle, setJobTitle] = useDependentState(workExperience.job_title);
+> = ({ workExperienceId }) => {
+  const {
+    workExperience,
+    handleUpdateWorkExperience,
+    handleDeleteWorkExperience,
+  } = useUserWorkExperiencesUpdateAction(workExperienceId);
+  const [jobTitle, setJobTitle] = useDependentState(workExperience!.job_title);
   const [jobDesc, setJobDesc] = useDependentState(
-    workExperience.job_description,
+    workExperience!.job_description,
   );
-  const [company, setCompany] = useDependentState(workExperience.company);
-  const startDate = workExperience.start_date.toDate();
-  const endDate = workExperience.end_date?.toDate();
+  const [company, setCompany] = useDependentState(workExperience!.company);
+  const startDate = workExperience!.start_date.toDate();
+  const endDate = workExperience!.end_date?.toDate();
+
+  const image =
+    'https://angel.co/cdn-cgi/image/width=60,height=60,format=auto,fit=scale-down/https://photos.angel.co/startups/i/8193732-a092106a88ddf90fc080c1876173b28b-medium_jpg.jpg?buster=1622717104';
 
   return (
     <VStack
-      align="flex-start"
       ml="1rem"
       pl="10px"
-      py={2}
-      spacing={1}
       w="full"
       bg="fg"
+      py={2}
+      align="flex-start"
+      spacing={1}
     >
-      <HStack w="full">
-        {/* Job title */}
-        <Editable
-          fontSize="lg"
-          fontWeight="medium"
-          value={jobTitle}
-          onChange={setJobTitle}
-          onSubmit={(value) =>
-            handleUpdateWorkExperience(workExperience.id, {
-              job_title: value,
-            })
-          }
-          placeholder="Job title..."
-          w="full"
-        >
-          <EditablePreview py={0} opacity={!jobTitle ? 0.3 : 1} />
-          <EditableInput py={0} rounded="sm" />
-        </Editable>
+      <HStack w="full" spacing={3}>
+        {/* Company logo */}
+        <Image
+          alt="Company logo"
+          src={image}
+          h="74px"
+          w="74px"
+          alignSelf="center"
+        />
 
-        {/* Delete button */}
-        <Tooltip
-          label="Delete work experience"
-          rounded="lg"
-          placement="left"
-          hasArrow
-        >
-          <IconButton
-            aria-label="Delete work button"
-            size="sm"
-            colorScheme="red"
-            variant="ghost"
-            rounded="full"
-            icon={<Icon fontSize="md" as={AiOutlineDelete} />}
-            onClick={() => handleDeleteWorkExperience(workExperience.id)}
-          />
-        </Tooltip>
-      </HStack>
+        <VStack w="full" align="flex-start" spacing={0.5}>
+          <HStack w="full">
+            {/* Job title */}
+            <Editable
+              fontSize="lg"
+              fontWeight="medium"
+              value={jobTitle}
+              onChange={setJobTitle}
+              onSubmit={(value) =>
+                handleUpdateWorkExperience({
+                  job_title: value,
+                })
+              }
+              placeholder="Job title..."
+              w="full"
+            >
+              <EditablePreview py={0} opacity={!jobTitle ? 0.3 : 1} />
+              <EditableInput py={0} rounded="sm" />
+            </Editable>
 
-      {/* Company name */}
-      <Editable
-        fontSize="sm"
-        value={company}
-        onChange={setCompany}
-        onSubmit={(value) =>
-          handleUpdateWorkExperience(workExperience.id, {
-            company: value,
-          })
-        }
-        placeholder="Company name..."
-        w="full"
-      >
-        <EditablePreview py={0} opacity={!company ? 0.3 : 1} />
-        <EditableInput py={0} rounded="sm" />
-      </Editable>
+            {/* Delete button */}
+            <Tooltip
+              label="Delete work experience"
+              rounded="lg"
+              placement="left"
+              hasArrow
+            >
+              <IconButton
+                aria-label="Delete work button"
+                size="sm"
+                colorScheme="red"
+                variant="ghost"
+                rounded="full"
+                icon={<Icon fontSize="md" as={AiOutlineDelete} />}
+                onClick={() => handleDeleteWorkExperience()}
+              />
+            </Tooltip>
+          </HStack>
 
-      {/* Job start and end dates */}
-      <HStack fontSize="xs" color="subtext" py={1} spacing={1}>
-        {/* Start date */}
-        <DateInput
-          maxDate={new Date()}
-          selectedDate={startDate}
-          onSubmit={(date) =>
-            handleUpdateWorkExperience(workExperience.id, {
-              start_date: Timestamp.fromDate(date!),
-            })
-          }
-        >
-          <Button
-            variant="link"
-            size="xs"
-            fontWeight="normal"
-            color="subtext"
-            _focus={{ shadow: 'none' }}
+          {/* Company name */}
+          <Editable
+            fontSize="sm"
+            value={company}
+            onChange={setCompany}
+            onSubmit={(value) =>
+              handleUpdateWorkExperience({
+                company: value,
+              })
+            }
+            placeholder="Company name..."
+            w="full"
           >
-            {format(startDate, 'dd MMMM yyyy')}
-          </Button>
-        </DateInput>
+            <EditablePreview py={0} opacity={!company ? 0.3 : 1} />
+            <EditableInput py={0} rounded="sm" />
+          </Editable>
 
-        <Text children="-" />
+          {/* Job start and end dates */}
+          <HStack fontSize="xs" color="subtext" py={1} spacing={1}>
+            {/* Start date */}
+            <DateInput
+              maxDate={new Date()}
+              selectedDate={startDate}
+              onSubmit={(date) =>
+                handleUpdateWorkExperience({
+                  start_date: Timestamp.fromDate(date!),
+                })
+              }
+            >
+              <Button
+                variant="link"
+                size="xs"
+                fontWeight="normal"
+                color="subtext"
+                _focus={{ shadow: 'none' }}
+              >
+                {format(startDate, 'dd MMMM yyyy')}
+              </Button>
+            </DateInput>
 
-        {/* End date */}
-        <DateInput
-          minDate={startDate}
-          cleanupLabel="I currently work here"
-          selectedDate={endDate}
-          onSubmit={(date) =>
-            handleUpdateWorkExperience(workExperience.id, {
-              end_date: date ? Timestamp.fromDate(date) : (null as any),
-            })
-          }
-        >
-          <Button
-            variant="link"
-            size="xs"
-            fontWeight="normal"
-            color="subtext"
-            _focus={{ shadow: 'none' }}
-          >
-            {endDate ? format(endDate, 'dd MMMM yyyy') : 'Present'}
-          </Button>
-        </DateInput>
+            <Text children="-" />
 
-        {/* Distance */}
-        <Text color="primary">
-          ({formatDistanceStrict(endDate ?? new Date(), startDate)})
-        </Text>
+            {/* End date */}
+            <DateInput
+              minDate={startDate}
+              cleanupLabel="I currently work here"
+              selectedDate={endDate}
+              onSubmit={(date) =>
+                handleUpdateWorkExperience({
+                  end_date: date ? Timestamp.fromDate(date) : (null as any),
+                })
+              }
+            >
+              <Button
+                variant="link"
+                size="xs"
+                fontWeight="normal"
+                color="subtext"
+                _focus={{ shadow: 'none' }}
+              >
+                {endDate ? format(endDate, 'dd MMMM yyyy') : 'Present'}
+              </Button>
+            </DateInput>
+
+            {/* Distance */}
+            <Text color="primary">
+              ({formatDistanceStrict(endDate ?? new Date(), startDate)})
+            </Text>
+          </HStack>
+        </VStack>
       </HStack>
 
       {/* Job description */}
@@ -222,7 +241,7 @@ export const UserWorkExperienceItemContent: FC<
         value={jobDesc}
         onChange={setJobDesc}
         onSubmit={(value) =>
-          handleUpdateWorkExperience(workExperience.id, {
+          handleUpdateWorkExperience({
             job_description: value,
           })
         }
