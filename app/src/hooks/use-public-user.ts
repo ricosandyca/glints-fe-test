@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useRecoilState } from 'recoil';
+
 import { getPublicUser } from '~/services/user';
 import { publicUserState } from '~/store/user';
 

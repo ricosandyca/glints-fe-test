@@ -59,6 +59,10 @@ export default extendTheme({
         default: 'gray.600',
         _dark: 'gray.300',
       },
+      muted: {
+        default: 'gray.400',
+        _dark: 'gray.500',
+      },
     },
   },
 });
