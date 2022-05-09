@@ -1,26 +1,22 @@
 import {
   Box,
-  Button,
   Divider,
   Heading,
-  Icon,
   Stack,
   StackProps,
   VStack,
 } from '@chakra-ui/react';
 import { FC } from 'react';
-import { BiLogOutCircle } from 'react-icons/bi';
 import { useRecoilValue } from 'recoil';
+
 import OnBoardingAlert from '~/components/OnBoardingAlert';
 import UserDateOfBirthInput from '~/components/UserDateOfBirthInput';
-
 import UserNameInput from '~/components/UserNameInput';
 import UserProfileMenu from '~/components/UserProfileMenu';
 import UserProfilePictureInput from '~/components/UserProfilePictureInput';
 import UserSummaryInput from '~/components/UserSummaryInput';
 import UserWorkExperienceList from '~/components/UserWorkExperienceList';
 import { withContainer } from '~/hoc/with-container';
-import { useSignOutAction } from '~/hooks/use-auth';
 import { userState } from '~/store/user';
 
 const AppProfile: FC = () => {
@@ -44,8 +40,6 @@ const AppProfile: FC = () => {
 };
 
 const AppProfileContent: FC<StackProps> = withContainer((props) => {
-  const { handleSignOut } = useSignOutAction();
-
   return (
     <VStack position="relative" w="full" spacing={6} {...props}>
       {/* Main card */}
@@ -114,19 +108,6 @@ const AppProfileContent: FC<StackProps> = withContainer((props) => {
           </Stack>
         </Box>
       </Box>
-
-      {/* Signout button */}
-      <Button
-        alignSelf="flex-start"
-        size="sm"
-        colorScheme="red"
-        variant="link"
-        fontWeight="500"
-        onClick={handleSignOut}
-        leftIcon={<Icon as={BiLogOutCircle} />}
-      >
-        Logout
-      </Button>
     </VStack>
   );
 });
