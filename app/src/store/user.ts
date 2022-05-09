@@ -28,3 +28,8 @@ export const userFieldValueState = selectorFamily<
       set(userState, { ...user, [key]: newValue });
     },
 });
+
+export const publicUserState = atom<UserDocument | null | undefined>({
+  key: 'publicUserState',
+  default: undefined,
+});

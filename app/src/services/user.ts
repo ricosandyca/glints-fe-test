@@ -52,14 +52,21 @@ export async function updateUser(userId: string, userData: Partial<User>) {
   return userRef.id;
 }
 
-export async function getUserByKey(
-  key: string,
-  excludeUserIds: string[] = [],
-): Promise<UserDocument | null> {
+export async function isUserKeyExistent(key: string, userId: string) {
   const userQuery = db
     .collection(USERS_COLLECTION)
     .where('key', '==', key)
-    .where(firebase.firestore.FieldPath.documentId(), 'not-in', excludeUserIds)
+    .where(firebase.firestore.FieldPath.documentId(), '!=', userId)
+    .limit(1);
+  const userQuerySnap = await userQuery.get();
+  return userQuerySnap.size >= 1;
+}
+
+export async function getPublicUser(key: string): Promise<UserDocument | null> {
+  const userQuery = db
+    .collection(USERS_COLLECTION)
+    .where('key', '==', key)
+    .where('is_public', '==', true)
     .limit(1);
   const userQuerySnap = await userQuery.get();
   let user: UserDocument | null = null;

@@ -7,7 +7,7 @@ import {
   useFileUploadAction,
   useFileURLFetcher,
 } from '~/hooks/use-file-upload';
-import { getUserByKey, updateUser } from '~/services/user';
+import { isUserKeyExistent, updateUser } from '~/services/user';
 import { userFieldValueState } from '~/store/user';
 import { User, UserDocument, UserWorkExperience } from '~/types/user';
 import { validateFileImage } from '~/utils/file';
@@ -252,7 +252,7 @@ export function useUserKeyUpdateAction() {
           throw new Error('Key is already used by the app');
 
         // validate key with other user document
-        const user = await getUserByKey(newKey, [userId]);
+        const user = await isUserKeyExistent(newKey, userId);
         // if the key is already in use
         if (user) throw new Error('Key is already used by another user');
 

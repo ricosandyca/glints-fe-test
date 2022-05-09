@@ -4,8 +4,9 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { withFloatingTheme } from '~/hoc/with-floating-theme';
 import { withFirebaseAuth } from '~/hoc/with-firebase-auth';
 import NotFound from '~/pages/not-found';
-import AppRoutes from './app';
-import AuthRoutes from './auth';
+import PublicProfile from '~/pages/public-profile';
+import AppRoutes from '~/routes/app';
+import AuthRoutes from '~/routes/auth';
 
 const IndexRoutes: FC = () => {
   return (
@@ -13,6 +14,7 @@ const IndexRoutes: FC = () => {
       <Routes>
         <Route path="auth/*" element={<AuthRoutes />} />
         <Route path="app/*" element={<AppRoutes />} />
+        <Route path=":userKey" element={<PublicProfile />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </BrowserRouter>
