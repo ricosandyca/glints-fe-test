@@ -6,6 +6,7 @@ import {
   Collapse,
   Divider,
   FormControl,
+  FormErrorMessage,
   HStack,
   Icon,
   IconButton,
@@ -19,14 +20,15 @@ import {
   PopoverTrigger as OrigPopoverTrigger,
   Switch,
   Text,
-  useColorModeValue,
+  Tooltip,
+  useClipboard,
   useDisclosure,
   VStack,
 } from '@chakra-ui/react';
 import { FC, memo, useMemo } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { BiLogOutCircle } from 'react-icons/bi';
-import { BsThreeDots } from 'react-icons/bs';
+import { BsThreeDots, BsLink45Deg } from 'react-icons/bs';
 import { FaGlobeAsia } from 'react-icons/fa';
 import truncate from 'smart-truncate';
 
@@ -61,18 +63,19 @@ const UserProfileMenu: FC<BoxProps> = (props) => {
     handleTogglePublicProfile,
     isLoading,
   } = useUserKeyUpdateAction();
-  const btnHoverBg = useColorModeValue('blackAlpha.100', 'whiteAlpha.200');
-  const btnActiveBg = useColorModeValue('blackAlpha.50', 'whiteAlpha.50');
   const { isOpen, onClose, onOpen } = useDisclosure({ defaultIsOpen: false });
   const { handleSignOut } = useSignOutAction();
+  const { onCopy, hasCopied } = useClipboard(
+    `${window.location.origin}/${initialKey}`,
+  );
 
   const truncatedHost = useMemo(() => {
-    return truncate(window.location.host, 8, { position: 5 });
+    return truncate(window.location.host, 8, { position: 4 });
   }, []);
 
   const onSubmit: SubmitHandler<UserProfileMenuInput> = async (data) => {
     const success = await handleUpdateUserKey(data.key);
-    if (!success) setError('key', { message: 'Error' });
+    if (!success) setError('key', { message: '' });
   };
 
   return (
@@ -84,7 +87,6 @@ const UserProfileMenu: FC<BoxProps> = (props) => {
         onOpen();
       }}
       placement="bottom-end"
-      closeOnBlur
       isLazy
     >
       <PopoverTrigger>
@@ -101,18 +103,7 @@ const UserProfileMenu: FC<BoxProps> = (props) => {
       <PopoverContent w="330px" _focus={{ shadow: 'none' }}>
         <PopoverBody px={0} py={2}>
           {/* Public toggle button */}
-          <HStack
-            px={4}
-            py={3}
-            spacing={3}
-            w="full"
-            justify="flex-start"
-            cursor="pointer"
-            _hover={{ bg: btnHoverBg }}
-            _active={{ bg: btnActiveBg }}
-            transitionDuration=".2s"
-            onClick={handleTogglePublicProfile}
-          >
+          <HStack px={4} py={2} spacing={3} w="full" justify="flex-start">
             <Icon color="subtext" fontSize="3xl" as={FaGlobeAsia} />
             <VStack flex={1} spacing={0.5} align="flex-start">
               <Text fontSize="sm" fontWeight="medium">
@@ -129,13 +120,13 @@ const UserProfileMenu: FC<BoxProps> = (props) => {
 
           {/* Custom url key */}
           <Collapse in={isPublic}>
-            <Box px={4} py={4}>
+            <Box px={4} pt={4} pb={2}>
               <Form onSubmit={handleSubmit(onSubmit)}>
                 <FormControl isInvalid={!!errors.key}>
                   <InputGroup size="sm">
                     <InputLeftAddon
                       rounded="md"
-                      px={3}
+                      px={2}
                       fontSize="xs"
                       children={truncatedHost + '/'}
                     />
@@ -145,23 +136,49 @@ const UserProfileMenu: FC<BoxProps> = (props) => {
                       rounded="md"
                       {...register('key', {
                         value: initialKey,
-                        pattern: /^[a-z0-9-_]+$/i,
+                        required: true,
+                        pattern: {
+                          value: /^[a-z0-9-_]+$/,
+                          message: 'a-z, 0-9, -, _ only',
+                        },
                       })}
                     />
-                    <InputRightElement w="50px" px={1}>
-                      <Button
-                        size="xs"
-                        px={2}
-                        colorScheme="primary"
-                        rounded="4px"
-                        type="submit"
-                        isLoading={isLoading}
-                        isDisabled={!isValid}
-                      >
-                        Save
-                      </Button>
+                    <InputRightElement w="82px" px={1}>
+                      <HStack spacing={1}>
+                        <Button
+                          size="xs"
+                          px={2}
+                          rounded="4px"
+                          type="submit"
+                          isLoading={isLoading}
+                          isDisabled={!isValid}
+                        >
+                          Save
+                        </Button>
+                        <Tooltip
+                          fontSize="sm"
+                          label="Copy profile link"
+                          rounded="lg"
+                          hasArrow
+                        >
+                          <IconButton
+                            aria-label="Copy link button"
+                            icon={<Icon fontSize="sm" as={BsLink45Deg} />}
+                            size="xs"
+                            px={2}
+                            colorScheme={hasCopied ? 'gray' : 'primary'}
+                            rounded="4px"
+                            onClick={onCopy}
+                          />
+                        </Tooltip>
+                      </HStack>
                     </InputRightElement>
                   </InputGroup>
+                  {errors.key?.message && (
+                    <FormErrorMessage fontSize="xs">
+                      {errors.key.message}
+                    </FormErrorMessage>
+                  )}
                 </FormControl>
               </Form>
             </Box>
