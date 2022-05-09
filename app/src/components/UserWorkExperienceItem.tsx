@@ -8,6 +8,7 @@ import {
   HStack,
   Icon,
   IconButton,
+  Stack,
   Text,
   Tooltip,
   VStack,
@@ -121,7 +122,12 @@ export const UserWorkExperienceItemContent: FC<
       align="flex-start"
       spacing={1}
     >
-      <HStack w="full" spacing={3}>
+      <Stack
+        direction={{ base: 'column', md: 'row' }}
+        align={{ base: 'flex-start', md: 'center' }}
+        w="full"
+        spacing={3}
+      >
         {/* Company logo */}
         <ImageInput
           onFileUpload={handleUploadCompanyLogo}
@@ -130,8 +136,8 @@ export const UserWorkExperienceItemContent: FC<
           uploadPercentage={percentage}
           previewImageURL={downloadURL}
           fontSize="2xl"
-          h="70px"
-          w="70px"
+          h={{ base: '46px', md: '66px' }}
+          w={{ base: '46px', md: '66px' }}
           rounded="none"
         />
 
@@ -151,7 +157,11 @@ export const UserWorkExperienceItemContent: FC<
               placeholder="Job title..."
               w="full"
             >
-              <EditablePreview py={0} opacity={!jobTitle ? 0.3 : 1} />
+              <EditablePreview
+                py={0}
+                opacity={!jobTitle ? 0.3 : 1}
+                noOfLines={1}
+              />
               <EditableInput py={0} rounded="sm" />
             </Editable>
 
@@ -245,7 +255,7 @@ export const UserWorkExperienceItemContent: FC<
             </Text>
           </HStack>
         </VStack>
-      </HStack>
+      </Stack>
 
       {/* Job description */}
       <Editable
