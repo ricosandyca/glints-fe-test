@@ -55,7 +55,11 @@ const UserProfileContent: FC<BoxProps & UserProfileProps> = withContainer(
     }, [user]);
 
     return (
-      <Box position="relative" top="-100px" {...boxProps}>
+      <Box
+        position="relative"
+        top={{ base: '-100px', md: '-125px' }}
+        {...boxProps}
+      >
         <VStack w="full" align="flex-start" maxW="800px" spacing={4}>
           {/* Profile picture */}
           <Box
