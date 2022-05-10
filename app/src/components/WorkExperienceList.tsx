@@ -1,22 +1,25 @@
 import { Box, BoxProps, VStack } from '@chakra-ui/react';
 import { FC, memo } from 'react';
-import { useRecoilValue } from 'recoil';
 
-import { publicUserState } from '~/store/user';
-import WorkExperienceItem from './WorkExperienceItem';
+import WorkExperienceItem from '~/components/WorkExperienceItem';
+import { UserWorkExperience } from '~/types/user';
 
-const WorkExperienceList: FC<BoxProps> = (props) => {
-  const user = useRecoilValue(publicUserState)!;
-  const workExperiences = user.work_experiences;
+export type WorkExperienceListProps = BoxProps & {
+  workExperiences: UserWorkExperience[];
+};
 
+const WorkExperienceList: FC<WorkExperienceListProps> = ({
+  workExperiences,
+  ...boxProps
+}) => {
   return (
-    <Box position="relative" {...props}>
+    <Box position="relative" {...boxProps}>
       {/* Items */}
       <VStack w="full" align="flex-start" spacing={0}>
         {workExperiences.map((we, i) => (
           <WorkExperienceItem
             key={we.id}
-            workExperienceId={we.id}
+            workExperience={we}
             isLastItem={i === workExperiences.length - 1}
           />
         ))}

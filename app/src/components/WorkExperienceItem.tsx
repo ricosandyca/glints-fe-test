@@ -11,29 +11,22 @@ import {
   VStack,
 } from '@chakra-ui/react';
 import { format, formatDistanceStrict } from 'date-fns';
-import { FC, memo, useMemo } from 'react';
+import { FC, memo } from 'react';
 import { MdOutlineWorkOutline } from 'react-icons/md';
-import { useRecoilValue } from 'recoil';
 
 import { useFileURLFetcher } from '~/hooks/use-file-upload';
-import { publicUserState } from '~/store/user';
+import { UserWorkExperience } from '~/types/user';
 
 export type WorkExperienceItemProps = BoxProps & {
-  workExperienceId: string;
+  workExperience: UserWorkExperience;
   isLastItem?: boolean;
 };
 
 const WorkExperienceItem: FC<WorkExperienceItemProps> = ({
-  workExperienceId,
+  workExperience: we,
   isLastItem,
   ...boxProps
 }) => {
-  const user = useRecoilValue(publicUserState)!;
-
-  const we = useMemo(() => {
-    return user.work_experiences.find(({ id }) => workExperienceId === id);
-  }, [user, workExperienceId]);
-
   const { downloadURL } = useFileURLFetcher(we?.company_logo);
   const companyBg = useColorModeValue('gray.100', 'gray.700');
 
