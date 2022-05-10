@@ -189,12 +189,12 @@ const UserProfileMenu: FC<BoxProps> = (props) => {
 
           <Divider my={2} />
 
-          <ColorPicker
-            px={4}
-            py={2}
-            value={colorScheme}
-            onChange={handleUpdateColorScheme}
-          />
+          <Box mx={4} py={2}>
+            <ColorPicker
+              value={colorScheme}
+              onChange={handleUpdateColorScheme}
+            />
+          </Box>
 
           <Divider my={2} />
 

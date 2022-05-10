@@ -50,15 +50,15 @@ const ColorSchemePicker: FC<ColorSchemePickerProps> = ({
   }, [selectedColor, onChange]);
 
   return (
-    <SimpleGrid gap={2} columns={7} {...simpleGridProps}>
+    <SimpleGrid gap={2.5} columns={7} {...simpleGridProps}>
       {colors.map((color, i) => (
         <IconButton
           key={i}
           aria-label="Color"
           position="relative"
           borderRadius="md"
-          w="34px"
-          h="34px"
+          w="33px"
+          h="33px"
           minW="0"
           colorScheme={color}
           onClick={() => setSelectedColor(color)}

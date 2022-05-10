@@ -10,6 +10,7 @@ import {
   useColorModeValue,
   VStack,
 } from '@chakra-ui/react';
+import { differenceInCalendarYears } from 'date-fns';
 import { FC, useMemo } from 'react';
 import { useParams } from 'react-router-dom';
 import { AiOutlineUser } from 'react-icons/ai';
@@ -17,6 +18,7 @@ import { FaBirthdayCake } from 'react-icons/fa';
 import { MdOutlineWorkOutline } from 'react-icons/md';
 import { useRecoilValue } from 'recoil';
 
+import WorkExperienceList from '~/components/WorkExperienceList';
 import { withContainer } from '~/hoc/with-container';
 import { useCustomTheme } from '~/hooks/use-theme';
 import { useFileURLFetcher } from '~/hooks/use-file-upload';
@@ -24,8 +26,6 @@ import { usePubliUserFetcher } from '~/hooks/use-public-user';
 import Loading from '~/pages/loading';
 import NotFound from '~/pages/not-found';
 import { publicUserState } from '~/store/user';
-import { differenceInCalendarYears } from 'date-fns';
-import WorkExperienceList from '~/components/WorkExperienceList';
 
 const PublicProfile: FC = () => {
   const { userKey } = useParams();
@@ -45,7 +45,7 @@ const PublicProfile: FC = () => {
         bg={bgColor}
       />
 
-      {/* Main card */}
+      {/* Main profile info */}
       <PublicProfileContent zIndex={2} />
     </Box>
   );
