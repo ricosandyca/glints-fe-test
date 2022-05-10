@@ -99,7 +99,7 @@ const PublicProfileContent: FC<BoxProps> = withContainer((props) => {
             <Text>{`@${user.key}`}</Text>
 
             {/* Latest workd */}
-            {latestWork.job_title && (
+            {latestWork?.job_title && (
               <HStack spacing={1}>
                 <Icon as={MdOutlineWorkOutline} />
                 <Text>{latestWork.job_title}</Text>
@@ -127,18 +127,20 @@ const PublicProfileContent: FC<BoxProps> = withContainer((props) => {
         </Text>
 
         {/* Work experiences */}
-        <VStack w="full" align="flex-start" spacing={6} pt={6}>
-          <Heading
-            fontSize="sm"
-            fontWeight="semibold"
-            textTransform="uppercase"
-            color="subtext"
-          >
-            Work Experiences
-          </Heading>
+        {user.work_experiences.length > 0 && (
+          <VStack w="full" align="flex-start" spacing={6} pt={6}>
+            <Heading
+              fontSize="sm"
+              fontWeight="semibold"
+              textTransform="uppercase"
+              color="subtext"
+            >
+              Work Experiences
+            </Heading>
 
-          <WorkExperienceList />
-        </VStack>
+            <WorkExperienceList />
+          </VStack>
+        )}
       </VStack>
     </Box>
   );
