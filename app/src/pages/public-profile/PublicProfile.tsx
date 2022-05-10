@@ -24,6 +24,7 @@ import Loading from '~/pages/loading';
 import NotFound from '~/pages/not-found';
 import { publicUserState } from '~/store/user';
 import { differenceInCalendarYears } from 'date-fns';
+import WorkExperienceList from '~/components/WorkExperienceList';
 
 const PublicProfile: FC = () => {
   const { userKey } = useParams();
@@ -67,11 +68,11 @@ const PublicProfileContent: FC<BoxProps> = withContainer((props) => {
           h={{ base: '150px', md: '200px' }}
           bg="bg"
           borderColor="bg"
-          borderWidth="8px"
+          borderWidth="6px"
           rounded="lg"
           position="relative"
-          left="-8px"
-          top="-8px"
+          left="-7px"
+          top="-7px"
         >
           {downloadURL ? (
             <Image
@@ -126,7 +127,7 @@ const PublicProfileContent: FC<BoxProps> = withContainer((props) => {
         </Text>
 
         {/* Work experiences */}
-        <VStack w="full" align="flex-start" spacing={4} pt={6}>
+        <VStack w="full" align="flex-start" spacing={6} pt={6}>
           <Heading
             fontSize="sm"
             fontWeight="semibold"
@@ -135,6 +136,8 @@ const PublicProfileContent: FC<BoxProps> = withContainer((props) => {
           >
             Work Experiences
           </Heading>
+
+          <WorkExperienceList />
         </VStack>
       </VStack>
     </Box>

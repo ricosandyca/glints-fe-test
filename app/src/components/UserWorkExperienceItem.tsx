@@ -259,6 +259,7 @@ export const UserWorkExperienceItemContent: FC<
 
       {/* Job description */}
       <Editable
+        fontSize="15px"
         color="subtext"
         value={jobDesc ?? ''}
         onChange={setJobDesc}
