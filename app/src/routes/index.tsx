@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 
 import { withFloatingTheme } from '~/hoc/with-floating-theme';
 import { withFirebaseAuth } from '~/hoc/with-firebase-auth';
@@ -12,6 +12,7 @@ const IndexRoutes: FC = () => {
   return (
     <BrowserRouter>
       <Routes>
+        <Route index element={<Navigate to="/app" />} />
         <Route path="auth/*" element={<AuthRoutes />} />
         <Route path="app/*" element={<AppRoutes />} />
         <Route path=":userKey" element={<PublicProfile />} />
