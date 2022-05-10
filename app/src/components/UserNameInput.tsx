@@ -26,7 +26,7 @@ const UserNameInput: FC = () => {
         value={name}
         onChange={setName}
         onSubmit={handleUpdateValue}
-        placeholder="Your name..."
+        placeholder="Your name"
         w="full"
       >
         <EditablePreview opacity={!name ? 0.3 : 1} py={0} />

@@ -154,7 +154,7 @@ export const UserWorkExperienceItemContent: FC<
                   job_title: value,
                 })
               }
-              placeholder="Job title..."
+              placeholder="Job title"
               w="full"
             >
               <EditablePreview
@@ -195,7 +195,7 @@ export const UserWorkExperienceItemContent: FC<
                 company: value,
               })
             }
-            placeholder="Company name..."
+            placeholder="Company name"
             w="full"
           >
             <EditablePreview py={0} opacity={!company ? 0.3 : 1} />
@@ -268,7 +268,7 @@ export const UserWorkExperienceItemContent: FC<
             job_description: value,
           })
         }
-        placeholder="Job description..."
+        placeholder="Job description"
         w="full"
       >
         <EditablePreview py={0} opacity={!jobDesc ? 0.3 : 1} />

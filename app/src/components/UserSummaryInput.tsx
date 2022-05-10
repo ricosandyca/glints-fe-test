@@ -23,7 +23,7 @@ const UserSummaryInput: FC = () => {
         value={summary ?? ''}
         onChange={setSummary}
         onSubmit={handleUpdateValue}
-        placeholder="Your professional summary..."
+        placeholder="Your professional summary"
         w="full"
       >
         <EditablePreview opacity={!summary ? 0.3 : 1} py={0} />
