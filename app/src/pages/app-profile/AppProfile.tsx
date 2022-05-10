@@ -17,17 +17,19 @@ import UserProfilePictureInput from '~/components/UserProfilePictureInput';
 import UserSummaryInput from '~/components/UserSummaryInput';
 import UserWorkExperienceList from '~/components/UserWorkExperienceList';
 import { withContainer } from '~/hoc/with-container';
+import { useCustomTheme } from '~/hooks/use-theme';
 import { userState } from '~/store/user';
 
 const AppProfile: FC = () => {
   const user = useRecoilValue(userState);
+  const { bgColor } = useCustomTheme(user?.color_scheme);
 
   if (!user) return null;
 
   return (
     <Box position="relative" w="full">
       {/* Accent background */}
-      <Box position="absolute" zIndex={1} w="full" h="400px" bg="primary" />
+      <Box position="absolute" zIndex={1} w="full" h="400px" bg={bgColor} />
 
       {/* Main card */}
       <AppProfileContent

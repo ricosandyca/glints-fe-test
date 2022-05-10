@@ -36,6 +36,7 @@ export async function initUser(uid: string, email: string) {
     date_of_birth: null,
     profile_picture: null,
     summary: null,
+    color_scheme: 'blue',
   };
   const userRef = db.collection(USERS_COLLECTION).doc(uid);
   await userRef.set(userData);

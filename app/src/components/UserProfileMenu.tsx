@@ -32,8 +32,9 @@ import { BsThreeDots, BsLink45Deg } from 'react-icons/bs';
 import { FaGlobeAsia } from 'react-icons/fa';
 import truncate from 'smart-truncate';
 
+import ColorPicker from '~/components/ColorPicker';
 import { useSignOutAction } from '~/hooks/use-auth';
-import { useUserKeyUpdateAction } from '~/hooks/use-user';
+import { useUserKeyUpdateAction, useUserUpdateAction } from '~/hooks/use-user';
 
 const Form = chakra('form');
 
@@ -56,6 +57,8 @@ const UserProfileMenu: FC<BoxProps> = (props) => {
   } = useForm<UserProfileMenuInput>({
     mode: 'all',
   });
+  const { value: colorScheme, handleUpdateValue: handleUpdateColorScheme } =
+    useUserUpdateAction('color_scheme');
   const {
     key: initialKey,
     isPublic,
@@ -183,6 +186,15 @@ const UserProfileMenu: FC<BoxProps> = (props) => {
               </Form>
             </Box>
           </Collapse>
+
+          <Divider my={2} />
+
+          <ColorPicker
+            px={4}
+            py={2}
+            value={colorScheme}
+            onChange={handleUpdateColorScheme}
+          />
 
           <Divider my={2} />
 

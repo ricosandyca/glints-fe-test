@@ -18,6 +18,7 @@ import { MdOutlineWorkOutline } from 'react-icons/md';
 import { useRecoilValue } from 'recoil';
 
 import { withContainer } from '~/hoc/with-container';
+import { useCustomTheme } from '~/hooks/use-theme';
 import { useFileURLFetcher } from '~/hooks/use-file-upload';
 import { usePubliUserFetcher } from '~/hooks/use-public-user';
 import Loading from '~/pages/loading';
@@ -29,6 +30,7 @@ import WorkExperienceList from '~/components/WorkExperienceList';
 const PublicProfile: FC = () => {
   const { userKey } = useParams();
   const { publicUser, isLoading } = usePubliUserFetcher(userKey!);
+  const { bgColor } = useCustomTheme(publicUser?.color_scheme);
 
   if (isLoading) return <Loading />;
   if (!publicUser) return <NotFound />;
@@ -40,7 +42,7 @@ const PublicProfile: FC = () => {
         zIndex={1}
         w="full"
         h={{ base: '200px', md: '250px', lg: '300px' }}
-        bg="primary"
+        bg={bgColor}
       />
 
       {/* Main card */}

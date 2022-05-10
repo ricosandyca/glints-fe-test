@@ -1,3 +1,4 @@
+import colors from '@chakra-ui/theme/foundations/colors';
 import firestore from 'firebase/firestore';
 
 import { WithFirestoreId } from '.';
@@ -24,6 +25,7 @@ export type User = {
   profile_picture: string | null;
   date_of_birth: firestore.Timestamp | null;
   work_experiences: UserWorkExperience[];
+  color_scheme: keyof typeof colors;
   created_at: firestore.Timestamp;
   updated_at: firestore.Timestamp;
 };
