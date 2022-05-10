@@ -30,6 +30,7 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import { BiLogOutCircle } from 'react-icons/bi';
 import { BsThreeDots, BsLink45Deg } from 'react-icons/bs';
 import { FaGlobeAsia } from 'react-icons/fa';
+import { FiEye } from 'react-icons/fi';
 import truncate from 'smart-truncate';
 
 import ColorPicker from '~/components/ColorPicker';
@@ -103,8 +104,17 @@ const UserProfileMenu: FC<BoxProps> = (props) => {
           />
         </Box>
       </PopoverTrigger>
-      <PopoverContent w="330px" _focus={{ shadow: 'none' }}>
+      <PopoverContent w="330px">
         <PopoverBody px={0} py={2}>
+          <Box mx={4} py={2}>
+            <ColorPicker
+              value={colorScheme}
+              onChange={handleUpdateColorScheme}
+            />
+          </Box>
+
+          <Divider my={2} />
+
           {/* Public toggle button */}
           <HStack px={4} py={2} spacing={3} w="full" justify="flex-start">
             <Icon color="subtext" fontSize="3xl" as={FaGlobeAsia} />
@@ -189,14 +199,22 @@ const UserProfileMenu: FC<BoxProps> = (props) => {
 
           <Divider my={2} />
 
-          <Box mx={4} py={2}>
-            <ColorPicker
-              value={colorScheme}
-              onChange={handleUpdateColorScheme}
-            />
-          </Box>
-
-          <Divider my={2} />
+          <Button
+            leftIcon={<Icon fontSize="lg" as={FiEye} />}
+            rounded="none"
+            variant="ghost"
+            size="sm"
+            py={3}
+            h="auto"
+            fontWeight="medium"
+            _focus={{ shadow: 'none' }}
+            onClick={() => window.open('/app/preview', '_blank')}
+            isFullWidth
+          >
+            <Text flex={1} textAlign="left" pl={1}>
+              Show preview
+            </Text>
+          </Button>
 
           <Button
             leftIcon={<Icon fontSize="lg" as={BiLogOutCircle} />}
@@ -205,10 +223,10 @@ const UserProfileMenu: FC<BoxProps> = (props) => {
             colorScheme="red"
             size="sm"
             py={3}
-            maxH="auto"
             h="auto"
-            onClick={handleSignOut}
+            fontWeight="medium"
             _focus={{ shadow: 'none' }}
+            onClick={handleSignOut}
             isFullWidth
           >
             <Text flex={1} textAlign="left" pl={1}>

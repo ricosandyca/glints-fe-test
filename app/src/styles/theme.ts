@@ -65,4 +65,15 @@ export default extendTheme({
       },
     },
   },
+  components: {
+    Popover: {
+      baseStyle: () => ({
+        content: {
+          _focus: {
+            boxShadow: 'none',
+          },
+        },
+      }),
+    },
+  },
 });
